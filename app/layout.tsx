@@ -9,9 +9,9 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader" })
 
 export const metadata: Metadata = {
-  title: "Msingi — the network for grassroots health workers",
+  title: "Msingi: the network for grassroots health workers",
   description:
-    "A professional network, funding marketplace and knowledge hub for grassroots health workers in Kenya. Plain, practical, human. The opposite of LinkedIn.",
+    "A professional network, funding marketplace and knowledge hub for grassroots health workers in Kenya. Plain, practical, human.",
   generator: "v0.app",
   manifest: "/manifest.webmanifest",
   applicationName: "Msingi",

@@ -65,7 +65,7 @@ function OnboardingInner() {
       return
     }
     if (themes.length === 0) {
-      setError("Pick at least one focus area — this is how the right people find you.")
+      setError("Pick at least one focus area. This is how the right people find you.")
       return
     }
     completeOnboarding({
@@ -107,7 +107,7 @@ function OnboardingInner() {
           {heading}
         </h1>
         <p className="mt-2 text-muted-foreground text-pretty">
-          Plain words only. No mission statements — what you actually do, and where.
+          Plain words only. No mission statements, just what you actually do and where.
         </p>
 
         <div className="mt-6 space-y-5 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
@@ -271,7 +271,7 @@ function OnboardingInner() {
             Enter Msingi <ArrowRight size={16} />
           </button>
           <p className="text-center text-xs text-muted-foreground">
-            Demo build: this creates a real profile in local storage — no server, no account.
+            Demo build: this creates a real profile in local storage. No server, no account.
           </p>
         </div>
       </main>

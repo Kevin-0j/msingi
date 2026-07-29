@@ -33,7 +33,7 @@ export default function ConsortiumPage() {
         <h1 className="font-display text-2xl text-foreground">The Msingi Consortium</h1>
         <p className="mt-1 leading-relaxed text-muted-foreground text-pretty">
           Counties, funders, NGOs and academic partners pooling money and evidence behind the same
-          frontline teams — instead of running four parallel pilots in the same village.
+          frontline teams, instead of running four parallel pilots in the same village.
         </p>
       </div>
 
@@ -81,7 +81,7 @@ export default function ConsortiumPage() {
         <h2 className="font-display text-xl text-foreground">How it works</h2>
         <ol className="mt-3 space-y-3">
           {[
-            "Members agree on a theme and county for a pooled window — say maternal health in Nairobi informal settlements.",
+            "Members agree on a theme and county for a pooled window, say maternal health in Nairobi informal settlements.",
             "The window is posted as a single funding call, so workers write one application, not five.",
             "Verified frontline teams apply with their posted impact record attached.",
             "Members review together and split the funding. Results come back to the same feed everyone reads.",

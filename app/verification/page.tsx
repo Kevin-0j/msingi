@@ -138,7 +138,7 @@ export default function VerificationPage() {
           <div className="mt-4 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
             <h2 className="font-semibold text-foreground">Upload your documents</h2>
             <p className="text-sm text-muted-foreground">
-              This is a demo — click to attach sample files.
+              This is a demo. Click to attach sample files.
             </p>
 
             <button

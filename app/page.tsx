@@ -27,7 +27,7 @@ export default function LandingPage() {
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 md:grid-cols-2 md:py-16">
         <div>
           <p className="mb-3 inline-flex rounded-full bg-primary-tint px-3 py-1 text-sm font-medium text-primary">
-            The opposite of LinkedIn
+            For frontline health workers in Kenya
           </p>
           <h1 className="font-display text-4xl font-semibold leading-tight text-foreground text-balance md:text-5xl">
             The real work of frontline health, in plain words.
@@ -123,7 +123,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        Msingi — a network for grassroots health workers. Demo build with mock data.
+        Msingi, a network for grassroots health workers. Demo build with mock data.
       </footer>
     </div>
   )

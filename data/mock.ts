@@ -275,7 +275,7 @@ export const posts: ImpactPost[] = [
     orgId: "o_silanga",
     location: "Silanga, Kibera",
     themes: ["Maternal health"],
-    where: "Silanga, Kibera — 3-day maternal clinic",
+    where: "3-day maternal clinic in Silanga, Kibera",
     peopleReached: "214 mothers seen",
     whatWeDid: "47 first antenatal visits, 12 high-risk cases referred, routine checks and iron supplements for everyone.",
     biggestGap: "No night-time emergency transport. When labour starts at 2am there is no safe way to reach a hospital.",
@@ -293,7 +293,7 @@ export const posts: ImpactPost[] = [
     orgId: "o_maji",
     location: "Turkana",
     themes: ["WASH", "Nutrition"],
-    where: "Kalokol — water treatment and nutrition screening",
+    where: "Water treatment and nutrition screening in Kalokol",
     peopleReached: "180 households visited",
     whatWeDid: "Set up 4 sand-filter points, screened 320 children, enrolled 28 into a feeding programme.",
     biggestGap: "Dry-season water sources dry up by August. We need storage, not just filters.",
@@ -311,7 +311,7 @@ export const posts: ImpactPost[] = [
     orgId: "o_mathare",
     location: "Mathare, Nairobi",
     themes: ["TB", "HIV"],
-    where: "Mathare 4A — TB contact tracing week",
+    where: "TB contact tracing week in Mathare 4A",
     peopleReached: "96 contacts traced",
     whatWeDid: "Found 9 new presumptive TB cases, started 6 on treatment, linked 3 to HIV care.",
     biggestGap: "People miss appointments because a clinic visit costs a day's wages. We need community pickup of drugs.",
@@ -328,7 +328,7 @@ export const posts: ImpactPost[] = [
     authorId: "u_faith",
     location: "Kisumu",
     themes: ["Adolescent SRH"],
-    where: "Kisumu — school outreach on adolescent health",
+    where: "School outreach on adolescent health in Kisumu",
     peopleReached: "260 students reached",
     whatWeDid: "Ran 4 school sessions, answered questions no one asks at home, referred 14 for confidential services.",
     biggestGap: "Stockouts of contraceptives at the youth corner. Demand is there, supply isn't.",
@@ -345,7 +345,7 @@ export const posts: ImpactPost[] = [
     authorId: "u_mercy",
     location: "Nyamira",
     themes: ["Immunization"],
-    where: "Nyamira — door-to-door immunization catch-up",
+    where: "Door-to-door immunization catch-up in Nyamira",
     peopleReached: "120 homes visited",
     whatWeDid: "Immunized 64 children who had missed doses, updated 90 growth cards.",
     biggestGap: "Cold-chain gaps mean I sometimes carry vaccines too far. We lose doses to heat.",
@@ -361,7 +361,7 @@ export const posts: ImpactPost[] = [
     authorId: "u_daniel",
     location: "Mombasa",
     themes: ["Outbreak response", "WASH"],
-    where: "Mombasa — cholera case-finding after floods",
+    where: "Cholera case-finding after floods in Mombasa",
     peopleReached: "340 people reached with messaging",
     whatWeDid: "Found 22 suspected cases, set up 3 oral-rehydration points, chlorinated 5 wells.",
     biggestGap: "We react after cases appear. We need early warning tied to the weather.",
@@ -413,7 +413,7 @@ export const fundingCalls: FundingCall[] = [
     theme: "Adolescent SRH",
     summary: "Up to KES 2M for youth-friendly reproductive-health work in urban-poor settlements.",
     description:
-      "We are looking for small, credible teams already trusted by young people. Funds can cover staff time, commodities, and youth-corner set-up. We do not need a logframe — we need to see your last three months of real work.",
+      "We are looking for small, credible teams already trusted by young people. Funds can cover staff time, commodities, and youth-corner set-up. We do not need a logframe. We need to see your last three months of real work.",
     amount: "up to KES 2,000,000",
     deadline: isoDaysFromToday(32, 23),
     location: "Nairobi informal settlements",
@@ -808,7 +808,7 @@ export const consortiumMembers: ConsortiumMember[] = [
 ]
 
 // ---------------------------------------------------------------------------
-// AI Funder Assistant — sample transcript shown behind the paywall gate
+// AI Funder Assistant: sample transcript shown behind the paywall gate
 // ---------------------------------------------------------------------------
 export const assistantSample: AssistantSampleTurn[] = [
   {
@@ -817,7 +817,7 @@ export const assistantSample: AssistantSampleTurn[] = [
   },
   {
     role: "assistant",
-    text: "Ubuntu Health Foundation's 'Adolescent SRH in informal settlements' is the closest match — they fund people rather than paperwork, and their notes say they want three months of real posted work, which you have. Coastal Wellbeing is a poor fit: wrong county.",
+    text: "Ubuntu Health Foundation's 'Adolescent SRH in informal settlements' is the closest match. They fund people rather than paperwork, and their notes say they want three months of real posted work, which you have. Coastal Wellbeing is a poor fit: wrong county.",
   },
   {
     role: "user",
@@ -825,6 +825,6 @@ export const assistantSample: AssistantSampleTurn[] = [
   },
   {
     role: "assistant",
-    text: "Lead with your numbers, not your mission: 214 mothers seen, 47 first ANC visits, 12 high-risk referrals in three days. Then the gap in one sentence — no night transport — then the ask: two riders on stipend plus fuel, for twelve months. Skip the logframe; this funder says they do not read them.",
+    text: "Lead with your numbers, not your mission: 214 mothers seen, 47 first ANC visits, 12 high-risk referrals in three days. Then the gap in one sentence, no night transport, then the ask: two riders on stipend plus fuel, for twelve months. Skip the logframe; this funder says they do not read them.",
   },
 ]

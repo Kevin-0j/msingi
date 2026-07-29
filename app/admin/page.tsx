@@ -202,7 +202,7 @@ function ReviewCard({
       ) : (
         <div className="mt-5 flex items-center gap-2 text-sm text-muted-foreground">
           Reviewed
-          {req.reviewedAt ? ` on ${new Date(req.reviewedAt).toLocaleDateString()}` : ""} —
+          {req.reviewedAt ? ` on ${new Date(req.reviewedAt).toLocaleDateString()}.` : "."}
           <button
             onClick={() => onReview(req.id, req.status === "verified" ? "rejected" : "verified")}
             className="text-primary hover:underline"

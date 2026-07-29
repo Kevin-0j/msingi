@@ -71,7 +71,7 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
     if (note.trim().length < 10) {
       setError(
         mode === "application"
-          ? "Add a short summary of your work — at least a sentence."
+          ? "Add a short summary of your work, at least a sentence."
           : "Add a line about why this call fits your work.",
       )
       return
@@ -142,7 +142,7 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
             </p>
             {call.eligibility.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                The funder hasn&apos;t listed eligibility rules — message them if you&apos;re
+                The funder hasn&apos;t listed eligibility rules. Message them if you&apos;re
                 unsure.
               </p>
             ) : (

@@ -8,14 +8,14 @@ import { assistantSample } from "@/data/mock"
 import { cn } from "@/lib/utils"
 import { Lock, Send, Sparkles } from "lucide-react"
 
-// Canned, offline responses. No model call, no API key — this is a demo shell.
+// Canned, offline responses. No model call, no API key. This is a demo shell.
 function cannedReply(question: string, callTitles: string[]) {
   const q = question.toLowerCase()
   if (q.includes("deadline") || q.includes("when")) {
-    return "Check the deadline chip on each call — the closest one is usually the one to write first. Applications sent in the last 48 hours before a deadline get read alongside everything else, so earlier is genuinely better."
+    return "Check the deadline chip on each call. The closest one is usually the one to write first. Applications sent in the last 48 hours before a deadline get read alongside everything else, so earlier is genuinely better."
   }
   if (q.includes("verif")) {
-    return "Most funders here filter on the Verified seal. If yours is still pending, say so in your note and name the document you submitted — funders read that as honest rather than incomplete."
+    return "Most funders here filter on the Verified seal. If yours is still pending, say so in your note and name the document you submitted. Funders read that as honest rather than incomplete."
   }
   if (q.includes("write") || q.includes("application") || q.includes("apply")) {
     return "Three sentences beats three pages: what you did last quarter with real numbers, the one gap that money would close, and what exactly you'd spend it on. Skip the mission statement."
@@ -62,8 +62,8 @@ export default function AssistantPage() {
               <Lock size={18} className="text-accent" /> This is a Pro feature
             </p>
             <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Everything else on Msingi — your profile, posting, messaging, and applying to every
-              funding call — stays free. The assistant is part of Msingi Pro.
+              Everything else on Msingi stays free: your profile, posting, messaging, and
+              applying to every funding call. The assistant is part of Msingi Pro.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <Link

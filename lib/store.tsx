@@ -45,7 +45,9 @@ import type {
 } from "@/lib/types"
 import { COMMISSION_RATE } from "@/lib/types"
 
-const STORAGE_KEY = "msingi.state.v2"
+// Bump this whenever seeded copy or shape changes: persisted state snapshots the
+// seed data, so an old key would keep serving stale text to returning visitors.
+const STORAGE_KEY = "msingi.state.v3"
 
 // Normalized actor used across profiles / messaging / follow.
 export interface Actor {
@@ -201,7 +203,7 @@ function readStoredState(): PersistState {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) return { ...defaultState, ...(JSON.parse(raw) as Partial<PersistState>) }
   } catch {
-    // corrupt or unavailable storage — fall back to seed data
+    // corrupt or unavailable storage, so fall back to seed data
   }
   return defaultState
 }
@@ -229,7 +231,7 @@ function setState(update: (prev: PersistState) => PersistState) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
   } catch {
-    // ignore — the demo still works from memory
+    // ignore, the demo still works from memory
   }
   listeners.forEach((l) => l())
 }
@@ -549,7 +551,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         status: "sent",
         createdAt: new Date().toISOString(),
       }
-      // One submission per call per applicant — applying replaces an earlier interest.
+      // One submission per call per applicant: applying replaces an earlier interest.
       setState((s) => ({
         ...s,
         submissions: [

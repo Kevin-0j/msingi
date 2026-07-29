@@ -149,7 +149,7 @@ function MessagesInner() {
               <div className="flex-1 space-y-3 overflow-y-auto bg-background/40 p-4">
                 {active.messages.length === 0 && (
                   <p className="mt-8 text-center text-sm text-muted-foreground">
-                    Say hello — start the conversation.
+                    Say hello and start the conversation.
                   </p>
                 )}
                 {active.messages.map((m) => {

@@ -108,7 +108,7 @@ function EventCard({ event }: { event: Event }) {
         <div className="mt-4 flex items-center gap-2 rounded-lg border border-impact/30 bg-impact/10 p-3 text-sm">
           <Check size={16} className="shrink-0 text-impact" />
           <span className="text-foreground">
-            You&apos;re registered — {registeredTicket.name} ({fmtPrice(registeredTicket.price)})
+            You&apos;re registered: {registeredTicket.name} ({fmtPrice(registeredTicket.price)})
           </span>
         </div>
       ) : choosing ? (

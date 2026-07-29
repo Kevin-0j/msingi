@@ -130,7 +130,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
               <div key={i} className="relative aspect-[3/2]">
                 <Image
                   src={src || "/placeholder.svg"}
-                  alt={`${post.where} — photo ${i + 1}`}
+                  alt={`${post.where}, photo ${i + 1}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 500px"
@@ -228,7 +228,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
         <div className="mt-5 space-y-4">
           {postComments.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No comments yet — be the first to respond.
+              No comments yet. Be the first to respond.
             </p>
           ) : (
             postComments.map((c) => {

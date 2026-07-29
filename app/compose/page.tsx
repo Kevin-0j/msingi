@@ -88,7 +88,7 @@ export default function ComposePage() {
             <input
               value={where}
               onChange={(e) => setWhere(e.target.value)}
-              placeholder="e.g. Silanga, Kibera — 3-day maternal clinic"
+              placeholder="e.g. 3-day maternal clinic in Silanga, Kibera"
               className="msingi-input"
             />
           </Field>

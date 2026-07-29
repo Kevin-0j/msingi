@@ -85,7 +85,7 @@ export function AppShell({
           </div>
         </div>
 
-        {/* Secondary nav — the left rail is hidden below lg, so surface it here */}
+        {/* Secondary nav: the left rail is hidden below lg, so surface it here */}
         <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:hidden">
           {MORE_NAV.map((item) => {
             const active = pathname.startsWith(item.href)

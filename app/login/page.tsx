@@ -9,7 +9,7 @@ import type { Role } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
-// Demo accounts — one per role dimension. No passwords, no backend.
+// Demo accounts, one per role dimension. No passwords, no backend.
 const SEEDED: { role: Role; id: string; label: string }[] = [
   { role: "worker", id: "u_amina", label: "Health worker" },
   { role: "organization", id: "o_silanga", label: "Organization" },
@@ -60,7 +60,7 @@ export default function LoginPage() {
           Welcome back
         </h1>
         <p className="mt-2 text-muted-foreground">
-          This demo has no passwords. Pick an account to sign in as — you can switch roles at any
+          This demo has no passwords. Pick an account to sign in as. You can switch roles at any
           time with the demo switcher.
         </p>
 

@@ -19,7 +19,7 @@ export default function PricingPage() {
         <h1 className="font-display text-2xl text-foreground">Plans & boost</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Everything a frontline health worker needs is free, forever. Paid tiers are for people
-          who want extra reach — never for access to funding.
+          who want extra reach, never for access to funding.
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
           You&apos;re on{" "}
@@ -79,7 +79,7 @@ export default function PricingPage() {
           <Rocket size={20} className="text-accent" /> Boost
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          One-off placement, no subscription. Boost never changes who gets funded — only who sees
+          One-off placement, no subscription. Boost never changes who gets funded, only who sees
           the work.
         </p>
         <div className="mt-4 grid gap-3 md:grid-cols-3">

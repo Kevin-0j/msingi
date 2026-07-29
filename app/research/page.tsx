@@ -24,8 +24,8 @@ export default function ResearchPage() {
         <h1 className="font-display text-2xl text-foreground">Research Hub</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Field evidence written by the people who collected it. Read the first 15 minutes free;
-          pay to download the full paper. Msingi takes {Math.round(COMMISSION_RATE * 100)}% — the
-          rest goes to the author.
+          pay to download the full paper. Msingi takes {Math.round(COMMISSION_RATE * 100)}%, and
+          the rest goes to the author.
         </p>
       </div>
 
@@ -98,7 +98,7 @@ function PublicationCard({ pub }: { pub: Publication }) {
         <div className="mt-4 flex flex-wrap items-center gap-2 rounded-lg border border-impact/30 bg-impact/10 p-3">
           <Check size={16} className="shrink-0 text-impact" />
           <span className="text-sm text-foreground">
-            Purchased — full paper unlocked. {kes(pub.priceKes - commission)} went to the author,{" "}
+            Purchased. Full paper unlocked. {kes(pub.priceKes - commission)} went to the author,{" "}
             {kes(commission)} to Msingi.
           </span>
           <button className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground hover:bg-secondary">
@@ -108,7 +108,7 @@ function PublicationCard({ pub }: { pub: Publication }) {
       ) : reading ? (
         <div className="mt-4 rounded-lg border border-border bg-secondary/40 p-4">
           <p className="flex items-center gap-1.5 text-sm font-medium text-foreground">
-            <Clock size={15} className="text-accent" /> Free preview — {pub.readMinutes} minutes
+            <Clock size={15} className="text-accent" /> Free preview: {pub.readMinutes} minutes
           </p>
           <p className="mt-2 text-sm leading-relaxed text-foreground">{pub.abstract}</p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">

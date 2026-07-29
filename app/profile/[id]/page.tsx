@@ -228,7 +228,7 @@ function WorkerBody({ id }: { id: string }) {
         <h2 className="mb-3 px-1 font-semibold text-foreground">Impact timeline</h2>
         {timeline.length === 0 ? (
           <p className="rounded-xl border border-dashed border-border bg-card p-6 text-center text-sm text-muted-foreground">
-            No posts yet — share what you did this week.
+            No posts yet. Share what you did this week.
           </p>
         ) : (
           <div className="space-y-4">
