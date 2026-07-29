@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Next 16 requires Node >= 20.9
+  NODE_VERSION = "22"
+
+# Gives Next.js server-rendered routes (/calls/[id], /post/[id], /profile/[id])
+# a runtime on Netlify. Netlify installs this plugin from here at build time.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

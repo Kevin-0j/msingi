@@ -1,0 +1,115 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), 'Newsreader', Georgia, serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-tint: var(--primary-tint);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-impact: var(--impact);
+  --color-impact-foreground: var(--impact-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-soft: 0 1px 2px rgba(20, 40, 50, 0.06);
+  --shadow-lift: 0 4px 16px rgba(20, 40, 50, 0.08);
+}
+
+:root {
+  color-scheme: light;
+  --radius: 0.75rem;
+
+  --background: #f7f5f1;
+  --foreground: #1b2a30;
+  --card: #ffffff;
+  --card-foreground: #1b2a30;
+  --popover: #ffffff;
+  --popover-foreground: #1b2a30;
+
+  --primary: #146879;
+  --primary-hover: #0f5464;
+  --primary-foreground: #ffffff;
+  --primary-tint: #e3eef1;
+
+  --secondary: #eeece7;
+  --secondary-foreground: #1b2a30;
+  --muted: #eeece7;
+  --muted-foreground: #5a6b72;
+
+  --accent: #c98a3c;
+  --accent-foreground: #ffffff;
+
+  --impact: #3e7d5b;
+  --impact-foreground: #ffffff;
+
+  --destructive: #b4472f;
+  --destructive-foreground: #ffffff;
+
+  --border: #e7e3dc;
+  --input: #e7e3dc;
+  --ring: #146879;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-sans);
+  }
+  .font-display {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .msingi-input {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 0.625rem 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--foreground);
+    outline: none;
+    transition: border-color 150ms ease;
+  }
+  .msingi-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .msingi-input:focus {
+    border-color: var(--primary);
+  }
+}
