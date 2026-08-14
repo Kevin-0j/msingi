@@ -59,8 +59,8 @@ export function PostCard({ post }: { post: ImpactPost }) {
         <p className="mt-3 text-[15px] leading-relaxed text-foreground">{post.whatWeDid}</p>
 
         <div className="mt-3 rounded-lg border border-border bg-secondary/50 p-3">
-          <p className="text-sm font-medium text-foreground">Biggest gap</p>
-          <p className="text-sm leading-relaxed text-muted-foreground">{post.biggestGap}</p>
+          <p className="text-sm font-medium text-foreground">Evidence gap · {post.gapCategory}</p>
+          <p className="text-sm leading-relaxed text-muted-foreground">{post.evidenceGap}</p>
         </div>
 
         <div className="mt-3 flex flex-wrap gap-2">

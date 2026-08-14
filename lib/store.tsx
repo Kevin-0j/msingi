@@ -20,6 +20,7 @@ import {
   events as seedEvents,
   publications as seedPublications,
   plans as seedPlans,
+  sponsorTiers as seedSponsorTiers,
 } from "@/data/mock"
 import type {
   User,
@@ -31,6 +32,7 @@ import type {
   Conversation,
   Message,
   VerificationRequest,
+  VerificationSubjectType,
   Submission,
   Role,
   VerificationStatus,
@@ -42,12 +44,19 @@ import type {
   Theme,
   OrgType,
   FunderType,
+  SponsorTier,
 } from "@/lib/types"
 import { COMMISSION_RATE } from "@/lib/types"
 
 // Bump this whenever seeded copy or shape changes: persisted state snapshots the
 // seed data, so an old key would keep serving stale text to returning visitors.
-const STORAGE_KEY = "afyashinani.state.v1"
+const STORAGE_KEY = "afyashinani.state.v2"
+
+// A verified seal is trusted for 12 months before it needs renewing, the
+// same discipline real verification platforms (Stripe Identity, Candid's
+// Seal of Transparency) use so a stale document can't back a live claim
+// indefinitely.
+const VERIFICATION_VALIDITY_DAYS = 365
 
 // Normalized actor used across profiles / messaging / follow.
 export interface Actor {
@@ -58,6 +67,7 @@ export interface Actor {
   location: string
   avatarColor: string
   verificationStatus: VerificationStatus
+  sponsorTierId?: string // funders only
 }
 
 interface PersistState {
@@ -71,6 +81,7 @@ interface PersistState {
   submissions: Submission[]
   eventRegistrations: EventRegistration[]
   publicationPurchases: PublicationPurchase[]
+  createdPublications: Publication[]
   supports: string[] // post ids the current demo has supported
   following: string[] // actor ids
   connections: string[] // actor ids
@@ -78,6 +89,8 @@ interface PersistState {
   verifiedOverrides: Record<string, VerificationStatus>
   // subscription plan id per role, so the paywall gate is switchable in the demo
   planByRole: Record<Role, string>
+  // sponsor tier overrides keyed by funder id; null means explicitly cleared
+  sponsorOverrides: Record<string, string | null>
   // profiles created through onboarding, alongside the seeded ones
   createdWorkers: User[]
   createdOrgs: Organization[]
@@ -105,6 +118,7 @@ const defaultState: PersistState = {
   submissions: seedSubmissions,
   eventRegistrations: [],
   publicationPurchases: [],
+  createdPublications: [],
   supports: [],
   following: [],
   connections: [],
@@ -115,6 +129,7 @@ const defaultState: PersistState = {
     funder: "plan_institution",
     admin: "plan_institution",
   },
+  sponsorOverrides: {},
   createdWorkers: [],
   createdOrgs: [],
   createdFunders: [],
@@ -150,9 +165,16 @@ interface StoreValue extends PersistState {
   funders: Funder[]
   events: Event[]
   publications: Publication[]
+  sponsorTiers: SponsorTier[]
   verifStatusOf: (id: string, fallback: VerificationStatus) => VerificationStatus
+  /** The expiry date of the subject's most recent verified request, if any. */
+  verificationExpiryOf: (id: string) => string | undefined
+  /** The subject's most recent verification request of any status, if any. */
+  latestVerificationRequestOf: (id: string) => VerificationRequest | undefined
+  sponsorTierIdOf: (id: string, fallback?: string) => string | undefined
   myPlanId: string
   myTier: SubscriptionTier
+  mySponsorTierId: string | undefined
   // actions
   setRole: (r: Role) => void
   setSignedIn: (v: boolean) => void
@@ -168,23 +190,29 @@ interface StoreValue extends PersistState {
   toggleConnect: (actorId: string) => void
   sendMessage: (conversationId: string, text: string) => void
   startConversation: (otherId: string) => string
-  submitVerification: (
-    subjectId: string,
-    subjectType: "worker" | "organization",
-    documents: { name: string; size: string }[],
-    note: string,
-  ) => void
+  submitVerification: (input: {
+    subjectId: string
+    subjectType: VerificationSubjectType
+    legalName: string
+    identifierNumber: string
+    documents: { key: string; name: string; size: string }[]
+    note: string
+  }) => { ok: true } | { ok: false; error: string }
   reviewVerification: (requestId: string, decision: "verified" | "rejected") => void
   /** Demo-only: clears a subject's seal so the request → review → approve flow can be replayed. */
   resetVerification: (subjectId: string) => void
+  /** Demo-only: backdates the subject's verification so the renewal-lapse behaviour can be shown live. */
+  simulateVerificationExpiry: (subjectId: string) => void
   addSubmission: (callId: string, type: "interest" | "application", note: string) => void
   setSubmissionStatus: (submissionId: string, status: Submission["status"]) => void
   addFundingCall: (
     call: Omit<FundingCall, "id" | "createdAt" | "funderId" | "theme"> & { theme?: Theme },
   ) => string
   registerForEvent: (eventId: string, ticketTypeId: string) => void
+  addPublication: (p: Omit<Publication, "id" | "createdAt" | "authorId">) => string
   purchasePublication: (publicationId: string) => void
   hasPurchased: (publicationId: string) => boolean
+  setSponsorTier: (tierId: string | null) => void
 }
 
 const StoreContext = createContext<StoreValue | null>(null)
@@ -252,13 +280,38 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const allWorkers = [...state.createdWorkers, ...seedWorkers]
     const allOrgs = [...state.createdOrgs, ...seedOrgs]
     const allFunders = [...state.createdFunders, ...seedFunders]
+    const allPublications = [...state.createdPublications, ...seedPublications]
 
     const getWorker = (id: string) => allWorkers.find((w) => w.id === id)
     const getOrg = (id: string) => allOrgs.find((o) => o.id === id)
     const getFunder = (id: string) => allFunders.find((f) => f.id === id)
 
-    const verifStatusOf = (id: string, fallback: VerificationStatus) =>
-      state.verifiedOverrides[id] ?? fallback
+    // The latest verification request for a subject, across every status,
+    // most recent first. Several helpers below need this same lookup.
+    const requestsFor = (id: string) =>
+      state.verificationRequests
+        .filter((r) => r.subjectId === id)
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+
+    const latestVerificationRequestOf = (id: string) => requestsFor(id)[0]
+
+    const verificationExpiryOf = (id: string) =>
+      requestsFor(id).find((r) => r.status === "verified" && r.expiresAt)?.expiresAt
+
+    // A verified seal that has passed its expiry stops counting as verified
+    // until it's renewed — trust lapses automatically rather than staying
+    // valid forever on a document nobody has re-checked.
+    const verifStatusOf = (id: string, fallback: VerificationStatus): VerificationStatus => {
+      const status = state.verifiedOverrides[id] ?? fallback
+      if (status === "verified") {
+        const expiresAt = verificationExpiryOf(id)
+        if (expiresAt && expiresAt < new Date().toISOString()) return "pending"
+      }
+      return status
+    }
+
+    const sponsorTierIdOf = (id: string, fallback?: string) =>
+      id in state.sponsorOverrides ? (state.sponsorOverrides[id] ?? undefined) : fallback
 
     const getActor = (id: string): Actor | undefined => {
       const w = getWorker(id)
@@ -293,6 +346,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           location: f.location,
           avatarColor: f.avatarColor,
           verificationStatus: verifStatusOf(f.id, f.verificationStatus),
+          sponsorTierId: sponsorTierIdOf(f.id, f.sponsorTierId),
         }
       if (id.startsWith("admin"))
         return {
@@ -488,16 +542,33 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       return id
     }
 
-    const submitVerification: StoreValue["submitVerification"] = (
-      subjectId,
-      subjectType,
-      documents,
-      note,
-    ) => {
+    const submitVerification: StoreValue["submitVerification"] = (input) => {
+      const { subjectId, subjectType, legalName, identifierNumber, documents, note } = input
+
+      // Fraud control: the same license/registration/ID number can't back a
+      // pending or verified claim on two different accounts at once. A
+      // rejected prior attempt doesn't block a fresh, corrected submission.
+      const normalized = identifierNumber.trim().toLowerCase()
+      const collision = state.verificationRequests.find(
+        (r) =>
+          r.subjectId !== subjectId &&
+          r.status !== "rejected" &&
+          r.identifierNumber.trim().toLowerCase() === normalized,
+      )
+      if (collision) {
+        return {
+          ok: false,
+          error:
+            "This registration/license number is already linked to another Afyashinani account. Contact support if this is a mistake.",
+        }
+      }
+
       const req: VerificationRequest = {
         id: `vr_${Date.now()}`,
         subjectId,
         subjectType,
+        legalName,
+        identifierNumber,
         documents,
         note,
         status: "pending",
@@ -513,19 +584,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ],
         verifiedOverrides: { ...s.verifiedOverrides, [subjectId]: "pending" },
       }))
+      return { ok: true }
     }
 
-    const reviewVerification: StoreValue["reviewVerification"] = (
-      requestId,
-      decision,
-    ) =>
+    const reviewVerification: StoreValue["reviewVerification"] = (requestId, decision) =>
       setState((s) => {
         const req = s.verificationRequests.find((r) => r.id === requestId)
+        const now = new Date()
+        const expiresAt =
+          decision === "verified"
+            ? new Date(now.getTime() + VERIFICATION_VALIDITY_DAYS * 86400000).toISOString()
+            : undefined
         return {
           ...s,
           verificationRequests: s.verificationRequests.map((r) =>
             r.id === requestId
-              ? { ...r, status: decision, reviewedAt: new Date().toISOString() }
+              ? { ...r, status: decision, reviewedAt: now.toISOString(), reviewedBy: meId, expiresAt }
               : r,
           ),
           verifiedOverrides: req
@@ -539,6 +613,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ...s,
         verifiedOverrides: { ...s.verifiedOverrides, [subjectId]: "unverified" },
         verificationRequests: s.verificationRequests.filter((r) => r.subjectId !== subjectId),
+      }))
+
+    const simulateVerificationExpiry: StoreValue["simulateVerificationExpiry"] = (subjectId) =>
+      setState((s) => ({
+        ...s,
+        verificationRequests: s.verificationRequests.map((r) =>
+          r.subjectId === subjectId && r.status === "verified"
+            ? { ...r, expiresAt: new Date(Date.now() - 86400000).toISOString() }
+            : r,
+        ),
       }))
 
     const addSubmission: StoreValue["addSubmission"] = (callId, type, note) => {
@@ -599,8 +683,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ],
       }))
 
+    const addPublication: StoreValue["addPublication"] = (p) => {
+      const id = `pub_${Date.now()}`
+      const pub: Publication = {
+        ...p,
+        id,
+        authorId: meId,
+        createdAt: new Date().toISOString(),
+      }
+      setState((s) => ({ ...s, createdPublications: [pub, ...s.createdPublications] }))
+      return id
+    }
+
     const purchasePublication: StoreValue["purchasePublication"] = (publicationId) => {
-      const pub = seedPublications.find((p) => p.id === publicationId)
+      const pub = allPublications.find((p) => p.id === publicationId)
       if (!pub) return
       const gross = pub.priceKes
       setState((s) =>
@@ -630,6 +726,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         (p) => p.publicationId === publicationId && p.buyerId === meId,
       )
 
+    const setSponsorTier: StoreValue["setSponsorTier"] = (tierId) =>
+      setState((s) => ({
+        ...s,
+        sponsorOverrides: { ...s.sponsorOverrides, [meId]: tierId },
+      }))
+
     return {
       ...state,
       meId,
@@ -641,10 +743,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       organizations: allOrgs,
       funders: allFunders,
       events: seedEvents,
-      publications: seedPublications,
+      publications: allPublications,
+      sponsorTiers: seedSponsorTiers,
       verifStatusOf,
+      verificationExpiryOf,
+      latestVerificationRequestOf,
+      sponsorTierIdOf,
       myPlanId,
       myTier: seedPlans.find((p) => p.id === myPlanId)?.tier ?? "free",
+      mySponsorTierId: (() => {
+        const f = getFunder(meId)
+        return f ? sponsorTierIdOf(f.id, f.sponsorTierId) : undefined
+      })(),
       setRole,
       setSignedIn,
       setPlan,
@@ -660,12 +770,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       submitVerification,
       reviewVerification,
       resetVerification,
+      simulateVerificationExpiry,
       addSubmission,
       setSubmissionStatus,
       addFundingCall,
       registerForEvent,
+      addPublication,
       purchasePublication,
       hasPurchased,
+      setSponsorTier,
     }
   }, [state])
 

@@ -7,6 +7,7 @@ import { Avatar } from "@/components/avatar"
 import { VerifiedSeal } from "@/components/verified-seal"
 import { useStore } from "@/lib/store"
 import type { VerificationRequest } from "@/lib/types"
+import { TriangleAlert } from "lucide-react"
 
 type Filter = "pending" | "verified" | "rejected" | "all"
 
@@ -102,15 +103,34 @@ export default function AdminPage() {
         </div>
       ) : (
         <ul className="flex flex-col gap-4">
-          {filtered.map((req) => (
-            <ReviewCard
-              key={req.id}
-              req={req}
-              actorName={getActor(req.subjectId)?.name ?? "Unknown"}
-              actorColor={getActor(req.subjectId)?.avatarColor ?? "#1b2a30"}
-              onReview={reviewVerification}
-            />
-          ))}
+          {filtered.map((req) => {
+            const actor = getActor(req.subjectId)
+            // Anti-fraud signals surfaced to the reviewer rather than assumed away:
+            // a legal name that doesn't match the profile, or an identifier
+            // number already used by another account.
+            const nameMismatch =
+              Boolean(actor) &&
+              actor!.name.trim().toLowerCase() !== req.legalName.trim().toLowerCase()
+            const duplicateIdentifier = verificationRequests.some(
+              (r) =>
+                r.id !== req.id &&
+                r.subjectId !== req.subjectId &&
+                r.status !== "rejected" &&
+                r.identifierNumber.trim().toLowerCase() ===
+                  req.identifierNumber.trim().toLowerCase(),
+            )
+            return (
+              <ReviewCard
+                key={req.id}
+                req={req}
+                actorName={actor?.name ?? "Unknown"}
+                actorColor={actor?.avatarColor ?? "#1b2a30"}
+                nameMismatch={nameMismatch}
+                duplicateIdentifier={duplicateIdentifier}
+                onReview={reviewVerification}
+              />
+            )
+          })}
         </ul>
       )}
     </AppShell>
@@ -121,13 +141,24 @@ function ReviewCard({
   req,
   actorName,
   actorColor,
+  nameMismatch,
+  duplicateIdentifier,
   onReview,
 }: {
   req: VerificationRequest
   actorName: string
   actorColor: string
+  nameMismatch: boolean
+  duplicateIdentifier: boolean
   onReview: (id: string, decision: "verified" | "rejected") => void
 }) {
+  const subjectLabel =
+    req.subjectType === "worker"
+      ? "Health worker"
+      : req.subjectType === "organization"
+        ? "Health service provider"
+        : "Health funding organisation"
+
   return (
     <li className="rounded-xl border border-border bg-card p-5">
       <div className="flex items-start justify-between gap-4">
@@ -144,13 +175,47 @@ function ReviewCard({
               {req.status === "verified" && <VerifiedSeal size={14} />}
             </div>
             <p className="mt-0.5 text-xs uppercase tracking-wide text-muted-foreground">
-              {req.subjectType === "worker" ? "Health worker" : "Health service provider"} · submitted{" "}
-              {new Date(req.createdAt).toLocaleDateString()}
+              {subjectLabel} · submitted {new Date(req.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
         <StatusBadge status={req.status} />
       </div>
+
+      {/* Identity claim, checked by hand against the documents below. */}
+      <dl className="mt-4 grid gap-2 rounded-lg border border-border p-3 text-sm sm:grid-cols-2">
+        <div>
+          <dt className="text-xs uppercase tracking-wide text-muted-foreground">Legal name</dt>
+          <dd className="mt-0.5 font-medium text-foreground">{req.legalName}</dd>
+        </div>
+        <div>
+          <dt className="text-xs uppercase tracking-wide text-muted-foreground">
+            License / registration no.
+          </dt>
+          <dd className="mt-0.5 font-mono text-[13px] font-medium text-foreground">
+            {req.identifierNumber}
+          </dd>
+        </div>
+      </dl>
+
+      {(nameMismatch || duplicateIdentifier) && (
+        <div className="mt-3 space-y-2">
+          {duplicateIdentifier && (
+            <p className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+              <TriangleAlert size={15} className="mt-0.5 shrink-0" />
+              This license/registration number is also on another account&apos;s active request.
+              Do not approve both.
+            </p>
+          )}
+          {nameMismatch && (
+            <p className="flex items-start gap-2 rounded-lg border border-accent/40 bg-accent/5 p-3 text-sm text-foreground">
+              <TriangleAlert size={15} className="mt-0.5 shrink-0 text-accent" />
+              Legal name does not match the profile name ({actorName}). Confirm this is the same
+              person or entity before approving.
+            </p>
+          )}
+        </div>
+      )}
 
       {req.note && (
         <p className="mt-4 rounded-lg bg-secondary p-3 text-sm text-foreground">{req.note}</p>
@@ -200,14 +265,20 @@ function ReviewCard({
           </button>
         </div>
       ) : (
-        <div className="mt-5 flex items-center gap-2 text-sm text-muted-foreground">
-          Reviewed
-          {req.reviewedAt ? ` on ${new Date(req.reviewedAt).toLocaleDateString()}.` : "."}
+        <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+          <span>
+            Reviewed
+            {req.reviewedAt ? ` on ${new Date(req.reviewedAt).toLocaleDateString()}` : ""}
+            {req.reviewedBy ? ` by ${req.reviewedBy}` : ""}.
+            {req.status === "verified" && req.expiresAt
+              ? ` Expires ${new Date(req.expiresAt).toLocaleDateString()}.`
+              : ""}
+          </span>
           <button
             onClick={() => onReview(req.id, req.status === "verified" ? "rejected" : "verified")}
             className="text-primary hover:underline"
           >
-            change to {req.status === "verified" ? "rejected" : "verified"}
+            {req.status === "verified" ? "revoke this seal" : "change to verified"}
           </button>
         </div>
       )}

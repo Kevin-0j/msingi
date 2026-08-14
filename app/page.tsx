@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Stethoscope, Building2, HandCoins, ArrowRight } from "lucide-react"
+import { funders, sponsorTiers } from "@/data/mock"
 
 export default function LandingPage() {
   return (
@@ -121,6 +122,52 @@ export default function LandingPage() {
             place="Mathare 4A"
             text="96 contacts traced · 9 new TB cases found · 6 started on treatment."
           />
+        </div>
+      </section>
+
+      {/* Sponsors: public disclosure of who funds the platform. */}
+      <section className="mx-auto max-w-6xl px-4 py-10">
+        <h2 className="font-display text-2xl font-semibold text-foreground">
+          Backed by our sponsors
+        </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Health funding organisations that support the network itself. Sponsorship is public,
+          and never affects who gets funded.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          {[...sponsorTiers]
+            .sort((a, b) => b.rank - a.rank)
+            .flatMap((tier) =>
+              funders
+                .filter((f) => f.sponsorTierId === tier.id)
+                .map((f) => (
+                  <div
+                    key={f.id}
+                    className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-soft)]"
+                    style={{ borderTopColor: tier.badgeColor, borderTopWidth: 3 }}
+                  >
+                    <span
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white"
+                      style={{ backgroundColor: f.avatarColor }}
+                    >
+                      {f.name
+                        .split(" ")
+                        .map((p) => p[0])
+                        .slice(0, 2)
+                        .join("")}
+                    </span>
+                    <div>
+                      <p className="font-medium text-foreground">{f.name}</p>
+                      <p
+                        className="text-xs font-semibold uppercase tracking-wide"
+                        style={{ color: tier.badgeColor }}
+                      >
+                        {tier.name} sponsor
+                      </p>
+                    </div>
+                  </div>
+                )),
+            )}
         </div>
       </section>
 

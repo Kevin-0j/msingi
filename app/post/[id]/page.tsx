@@ -11,7 +11,7 @@ import { Avatar } from "@/components/avatar"
 import { VerifiedSeal } from "@/components/verified-seal"
 import { StatChip, ThemeChip } from "@/components/stat-chip"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, Heart, MapPin, MessageSquare, UserPlus, Check, Send } from "lucide-react"
+import { ArrowLeft, BookOpen, Heart, MapPin, MessageSquare, UserPlus, Check, Send } from "lucide-react"
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleDateString("en-KE", {
@@ -27,6 +27,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
   const {
     posts,
     comments,
+    publications,
     getActor,
     getOrg,
     meId,
@@ -62,6 +63,9 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
     .filter((c) => c.postId === post.id)
     .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
   const isMe = post.authorId === meId
+  const relatedPublications = publications.filter(
+    (p) => p.relatedPostId === post.id || p.relatedGapCategory === post.gapCategory,
+  )
 
   function submitComment(e: React.FormEvent) {
     e.preventDefault()
@@ -145,9 +149,30 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
           <StoryRow label="How many people" value={post.peopleReached} />
           <StoryRow label="What we did" value={post.whatWeDid} />
           <div className="rounded-lg border border-accent/30 bg-accent/5 p-4">
-            <p className="text-sm font-semibold text-accent">Biggest gap or need</p>
-            <p className="mt-1 leading-relaxed text-foreground">{post.biggestGap}</p>
+            <p className="text-sm font-semibold text-accent">Evidence gap · {post.gapCategory}</p>
+            <p className="mt-1 leading-relaxed text-foreground">{post.evidenceGap}</p>
           </div>
+
+          {relatedPublications.length > 0 && (
+            <div className="rounded-lg border border-border bg-secondary/40 p-4">
+              <p className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                <BookOpen size={15} className="text-primary" />
+                Research addressing this gap
+              </p>
+              <ul className="mt-2 space-y-1.5">
+                {relatedPublications.map((p) => (
+                  <li key={p.id}>
+                    <Link
+                      href={`/research?gap=${encodeURIComponent(post.gapCategory)}`}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      {p.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Stat chips */}
           <div className="flex flex-wrap gap-2">

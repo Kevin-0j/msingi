@@ -7,11 +7,13 @@ import { AppShell } from "@/components/app-shell"
 import { useStore } from "@/lib/store"
 import { THEMES, type Theme } from "@/lib/types"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, CircleAlert, Plus, X } from "lucide-react"
+import { ArrowLeft, CircleAlert, Plus, ShieldCheck, X } from "lucide-react"
 
 export default function NewCallPage() {
   const router = useRouter()
-  const { role, addFundingCall } = useStore()
+  const { role, meId, getActor, verifStatusOf, addFundingCall } = useStore()
+  const me = getActor(meId)
+  const myStatus = verifStatusOf(meId, me?.verificationStatus ?? "unverified")
 
   const [title, setTitle] = useState("")
   const [summary, setSummary] = useState("")
@@ -28,13 +30,52 @@ export default function NewCallPage() {
     return (
       <AppShell>
         <div className="rounded-xl border border-border bg-card p-8 text-center">
-          <h1 className="font-display text-xl text-foreground">Funders only</h1>
+          <h1 className="font-display text-xl text-foreground">
+            Health funding organisations only
+          </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Switch to the Funder role with the demo switcher to post a funding call.
+            Switch to the Health funding organisation role with the demo switcher to post a call.
           </p>
           <Link href="/calls" className="mt-3 inline-block text-sm text-primary hover:underline">
             Back to funding calls
           </Link>
+        </div>
+      </AppShell>
+    )
+  }
+
+  // Money never moves through an unchecked account: only a verified funding
+  // organisation can put a call in front of health workers.
+  if (myStatus !== "verified") {
+    return (
+      <AppShell>
+        <div className="mx-auto max-w-xl rounded-xl border border-accent/40 bg-accent/5 p-8 text-center">
+          <span className="inline-flex rounded-lg bg-accent/15 p-2.5 text-accent">
+            <ShieldCheck size={22} />
+          </span>
+          <h1 className="mt-3 font-display text-xl text-foreground">
+            Verify your organisation before posting a call
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Health workers are asked to share real work and real numbers with whoever posts a
+            call. We hold funders to the same bar, so only verified funding organisations can
+            post. Your current status is{" "}
+            <span className="font-medium text-foreground">{myStatus}</span>.
+          </p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <Link
+              href="/verification"
+              className="rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90"
+            >
+              Start verification
+            </Link>
+            <Link
+              href="/calls"
+              className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary"
+            >
+              Back to funding calls
+            </Link>
+          </div>
         </div>
       </AppShell>
     )

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"
 import { AppShell } from "@/components/app-shell"
 import { Avatar } from "@/components/avatar"
 import { VerifiedSeal } from "@/components/verified-seal"
+import { SponsorBadge, sponsorRank } from "@/components/sponsor-badge"
 import { useStore, type Actor } from "@/lib/store"
 import { THEMES, LOCATIONS, type Theme } from "@/lib/types"
 
@@ -65,6 +66,10 @@ function SearchInner() {
               .toLowerCase()
               .includes(q.toLowerCase()),
       )
+      // Sponsors surface first, highest tier first. This is the placement
+      // benefit sponsorship actually buys; it changes ordering only, never
+      // who appears in the results.
+      .sort((a, b) => sponsorRank(b.sponsorTierId) - sponsorRank(a.sponsorTierId))
   }, [
     workers,
     organizations,
@@ -207,6 +212,7 @@ function SearchInner() {
                 >
                   <span className="truncate">{a.name}</span>
                   {a.verificationStatus === "verified" && <VerifiedSeal size={14} />}
+                  <SponsorBadge tierId={a.sponsorTierId} />
                 </Link>
                 <p className="truncate text-sm text-muted-foreground">
                   {a.subtitle} · {a.location}

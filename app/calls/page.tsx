@@ -5,6 +5,7 @@ import Link from "next/link"
 import { AppShell } from "@/components/app-shell"
 import { Avatar } from "@/components/avatar"
 import { VerifiedSeal } from "@/components/verified-seal"
+import { SponsorBadge, sponsorRank } from "@/components/sponsor-badge"
 import { useStore } from "@/lib/store"
 import { THEMES, type Theme } from "@/lib/types"
 import { Plus, Inbox } from "lucide-react"
@@ -18,9 +19,17 @@ export default function CallsPage() {
   const { fundingCalls, getActor, submissions, role, meId } = useStore()
   const [theme, setTheme] = useState<Theme | "all">("all")
 
+  // Sponsored funders' calls list first, then by soonest deadline. Placement
+  // is the benefit sponsorship buys; it never filters anyone out.
   const calls = fundingCalls
     .filter((c) => (theme === "all" ? true : c.themes.includes(theme)))
-    .sort((a, b) => (a.deadline < b.deadline ? -1 : 1))
+    .sort((a, b) => {
+      const bySponsor =
+        sponsorRank(getActor(b.funderId)?.sponsorTierId) -
+        sponsorRank(getActor(a.funderId)?.sponsorTierId)
+      if (bySponsor !== 0) return bySponsor
+      return a.deadline < b.deadline ? -1 : 1
+    })
 
   const isFunder = role === "funder"
   const myCalls = fundingCalls.filter((c) => c.funderId === meId)
@@ -155,6 +164,7 @@ export default function CallsPage() {
                         <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
                           {funder?.name ?? "Afyashinani funder"}
                           {funder?.verificationStatus === "verified" && <VerifiedSeal size={14} />}
+                          <SponsorBadge tierId={funder?.sponsorTierId} />
                         </div>
                       </div>
                     </div>

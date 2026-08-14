@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { AppShell } from "@/components/app-shell"
 import { useStore } from "@/lib/store"
-import { THEMES, LOCATIONS, type Theme, type StatChip } from "@/lib/types"
+import { THEMES, LOCATIONS, GAP_CATEGORIES, type Theme, type GapCategory, type StatChip } from "@/lib/types"
 import { StatChip as StatChipView } from "@/components/stat-chip"
 import { cn } from "@/lib/utils"
 import { Mic, ImagePlus, ArrowLeft } from "lucide-react"
@@ -37,6 +37,7 @@ export default function ComposePage() {
   const [reached, setReached] = useState("")
   const [did, setDid] = useState("")
   const [gap, setGap] = useState("")
+  const [gapCategory, setGapCategory] = useState<GapCategory>(GAP_CATEGORIES[0])
   const [location, setLocation] = useState(LOCATIONS[0])
   const [themes, setThemes] = useState<Theme[]>([])
   const [photos, setPhotos] = useState<string[]>([])
@@ -60,7 +61,8 @@ export default function ComposePage() {
       where: where.trim(),
       peopleReached: reached.trim(),
       whatWeDid: did.trim(),
-      biggestGap: gap.trim(),
+      evidenceGap: gap.trim(),
+      gapCategory,
       statChips: chips,
       photos,
     })
@@ -112,7 +114,7 @@ export default function ComposePage() {
             />
           </Field>
 
-          <Field label="What's the biggest gap or need?">
+          <Field label="What's the evidence gap?">
             <textarea
               value={gap}
               onChange={(e) => setGap(e.target.value)}
@@ -120,6 +122,22 @@ export default function ComposePage() {
               placeholder="e.g. No night-time emergency transport"
               className="msingi-input"
             />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Plain language is fine. This becomes a citable gap other health workers, researchers
+              and funders can search and act on.
+            </p>
+          </Field>
+
+          <Field label="Evidence gap category">
+            <select
+              value={gapCategory}
+              onChange={(e) => setGapCategory(e.target.value as GapCategory)}
+              className="msingi-input"
+            >
+              {GAP_CATEGORIES.map((g) => (
+                <option key={g}>{g}</option>
+              ))}
+            </select>
           </Field>
 
           <Field label="Location">

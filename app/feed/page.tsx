@@ -1,19 +1,28 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { Suspense, useMemo, useState } from "react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { AppShell } from "@/components/app-shell"
 import { RightRail } from "@/components/right-rail"
 import { PostCard } from "@/components/post-card"
 import { useStore } from "@/lib/store"
-import { THEMES, LOCATIONS, type Theme } from "@/lib/types"
+import { THEMES, LOCATIONS, GAP_CATEGORIES, type Theme, type GapCategory } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { Search, PenSquare } from "lucide-react"
 
-export default function FeedPage() {
+function isGapCategory(v: string | null): v is GapCategory {
+  return v !== null && (GAP_CATEGORIES as string[]).includes(v)
+}
+
+function FeedInner() {
+  const params = useSearchParams()
+  const gapParam = params.get("gap")
+
   const { posts, getActor } = useStore()
   const [theme, setTheme] = useState<Theme | "all">("all")
   const [location, setLocation] = useState("all")
+  const [gap, setGap] = useState<GapCategory | "all">(isGapCategory(gapParam) ? gapParam : "all")
   const [verifiedOnly, setVerifiedOnly] = useState(false)
   const [query, setQuery] = useState("")
 
@@ -21,17 +30,18 @@ export default function FeedPage() {
     return posts.filter((p) => {
       if (theme !== "all" && !p.themes.includes(theme)) return false
       if (location !== "all" && p.location !== location) return false
+      if (gap !== "all" && p.gapCategory !== gap) return false
       if (verifiedOnly) {
         const a = getActor(p.authorId)
         if (!a || a.verificationStatus !== "verified") return false
       }
       if (query.trim()) {
-        const hay = `${p.where} ${p.whatWeDid} ${p.biggestGap} ${p.location} ${p.themes.join(" ")}`.toLowerCase()
+        const hay = `${p.where} ${p.whatWeDid} ${p.evidenceGap} ${p.location} ${p.themes.join(" ")}`.toLowerCase()
         if (!hay.includes(query.toLowerCase())) return false
       }
       return true
     })
-  }, [posts, theme, location, verifiedOnly, query, getActor])
+  }, [posts, theme, location, gap, verifiedOnly, query, getActor])
 
   return (
     <AppShell right={<RightRail />}>
@@ -67,7 +77,7 @@ export default function FeedPage() {
           ))}
         </div>
 
-        {/* Location + verified */}
+        {/* Location + gap + verified */}
         <div className="flex flex-wrap items-center gap-2">
           <select
             value={location}
@@ -78,6 +88,18 @@ export default function FeedPage() {
             {LOCATIONS.map((l) => (
               <option key={l} value={l}>
                 {l}
+              </option>
+            ))}
+          </select>
+          <select
+            value={gap}
+            onChange={(e) => setGap(e.target.value as GapCategory | "all")}
+            className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground outline-none"
+          >
+            <option value="all">All evidence gaps</option>
+            {GAP_CATEGORIES.map((g) => (
+              <option key={g} value={g}>
+                {g}
               </option>
             ))}
           </select>
@@ -100,7 +122,7 @@ export default function FeedPage() {
           <div className="rounded-xl border border-dashed border-border bg-card p-10 text-center">
             <p className="text-foreground">No posts match these filters.</p>
             <p className="text-sm text-muted-foreground">
-              Try clearing the theme or location, or{" "}
+              Try clearing the theme, location or evidence gap, or{" "}
               <Link href="/compose" className="text-primary hover:underline">
                 share what you did this week
               </Link>
@@ -140,5 +162,13 @@ function FilterChip({
     >
       {children}
     </button>
+  )
+}
+
+export default function FeedPage() {
+  return (
+    <Suspense fallback={null}>
+      <FeedInner />
+    </Suspense>
   )
 }

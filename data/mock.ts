@@ -14,6 +14,7 @@ import type {
   BoostOption,
   ConsortiumMember,
   AssistantSampleTurn,
+  SponsorTier,
 } from "@/lib/types"
 
 // Seed timestamps are anchored to today so the demo never goes stale (calls
@@ -225,6 +226,7 @@ export const funders: Funder[] = [
     backed: ["o_silanga", "u_amina"],
     avatarColor: "#146879",
     verificationStatus: "verified",
+    sponsorTierId: "sponsor_platinum",
     createdAt: "2023-09-01T08:00:00.000Z",
   },
   {
@@ -237,6 +239,7 @@ export const funders: Funder[] = [
     backed: ["u_daniel"],
     avatarColor: "#3e7d5b",
     verificationStatus: "verified",
+    sponsorTierId: "sponsor_silver",
     createdAt: "2023-09-15T08:00:00.000Z",
   },
   {
@@ -261,6 +264,7 @@ export const funders: Funder[] = [
     backed: ["o_maji"],
     avatarColor: "#146879",
     verificationStatus: "verified",
+    sponsorTierId: "sponsor_gold",
     createdAt: "2023-07-10T08:00:00.000Z",
   },
 ]
@@ -278,7 +282,8 @@ export const posts: ImpactPost[] = [
     where: "3-day maternal clinic in Silanga, Kibera",
     peopleReached: "214 mothers seen",
     whatWeDid: "47 first antenatal visits, 12 high-risk cases referred, routine checks and iron supplements for everyone.",
-    biggestGap: "No night-time emergency transport. When labour starts at 2am there is no safe way to reach a hospital.",
+    evidenceGap: "No night-time emergency transport. When labour starts at 2am there is no safe way to reach a hospital.",
+    gapCategory: "Emergency transport & referral",
     statChips: [
       { label: "reached", value: "214" },
       { label: "new ANC", value: "47" },
@@ -296,7 +301,8 @@ export const posts: ImpactPost[] = [
     where: "Water treatment and nutrition screening in Kalokol",
     peopleReached: "180 households visited",
     whatWeDid: "Set up 4 sand-filter points, screened 320 children, enrolled 28 into a feeding programme.",
-    biggestGap: "Dry-season water sources dry up by August. We need storage, not just filters.",
+    evidenceGap: "Dry-season water sources dry up by August. We need storage, not just filters.",
+    gapCategory: "Water, sanitation & hygiene",
     statChips: [
       { label: "households", value: "180" },
       { label: "children screened", value: "320" },
@@ -314,7 +320,8 @@ export const posts: ImpactPost[] = [
     where: "TB contact tracing week in Mathare 4A",
     peopleReached: "96 contacts traced",
     whatWeDid: "Found 9 new presumptive TB cases, started 6 on treatment, linked 3 to HIV care.",
-    biggestGap: "People miss appointments because a clinic visit costs a day's wages. We need community pickup of drugs.",
+    evidenceGap: "People miss appointments because a clinic visit costs a day's wages. We need community pickup of drugs.",
+    gapCategory: "Health financing & affordability",
     statChips: [
       { label: "traced", value: "96" },
       { label: "new TB", value: "9" },
@@ -331,7 +338,8 @@ export const posts: ImpactPost[] = [
     where: "School outreach on adolescent health in Kisumu",
     peopleReached: "260 students reached",
     whatWeDid: "Ran 4 school sessions, answered questions no one asks at home, referred 14 for confidential services.",
-    biggestGap: "Stockouts of contraceptives at the youth corner. Demand is there, supply isn't.",
+    evidenceGap: "Stockouts of contraceptives at the youth corner. Demand is there, supply isn't.",
+    gapCategory: "Medicine & commodity stockouts",
     statChips: [
       { label: "students", value: "260" },
       { label: "sessions", value: "4" },
@@ -348,7 +356,8 @@ export const posts: ImpactPost[] = [
     where: "Door-to-door immunization catch-up in Nyamira",
     peopleReached: "120 homes visited",
     whatWeDid: "Immunized 64 children who had missed doses, updated 90 growth cards.",
-    biggestGap: "Cold-chain gaps mean I sometimes carry vaccines too far. We lose doses to heat.",
+    evidenceGap: "Cold-chain gaps mean I sometimes carry vaccines too far. We lose doses to heat.",
+    gapCategory: "Cold chain & logistics",
     statChips: [
       { label: "homes", value: "120" },
       { label: "children immunized", value: "64" },
@@ -364,7 +373,8 @@ export const posts: ImpactPost[] = [
     where: "Cholera case-finding after floods in Mombasa",
     peopleReached: "340 people reached with messaging",
     whatWeDid: "Found 22 suspected cases, set up 3 oral-rehydration points, chlorinated 5 wells.",
-    biggestGap: "We react after cases appear. We need early warning tied to the weather.",
+    evidenceGap: "We react after cases appear. We need early warning tied to the weather.",
+    gapCategory: "Data & reporting systems",
     statChips: [
       { label: "reached", value: "340" },
       { label: "suspected cases", value: "22" },
@@ -531,9 +541,12 @@ export const verificationRequests: VerificationRequest[] = [
     id: "vr_1",
     subjectId: "u_baraka",
     subjectType: "worker",
+    legalName: "Baraka Otieno",
+    identifierNumber: "KMPDC/OT-48213",
     documents: [
-      { name: "clinical-officer-license.pdf", size: "482 KB" },
-      { name: "cbo-appointment-letter.pdf", size: "210 KB" },
+      { key: "practice_license", name: "clinical-officer-license.pdf", size: "482 KB" },
+      { key: "national_id", name: "national-id.pdf", size: "210 KB" },
+      { key: "good_conduct", name: "dci-good-conduct-certificate.pdf", size: "340 KB" },
     ],
     note: "Registered clinical officer, board number attached. Working with Mathare Health CBO since 2018.",
     status: "pending",
@@ -543,7 +556,13 @@ export const verificationRequests: VerificationRequest[] = [
     id: "vr_2",
     subjectId: "o_mathare",
     subjectType: "organization",
-    documents: [{ name: "ngo-registration-certificate.pdf", size: "1.1 MB" }],
+    legalName: "Mathare Health CBO",
+    identifierNumber: "CBO/NRB/2019/00452",
+    documents: [
+      { key: "registration_cert", name: "ngo-registration-certificate.pdf", size: "1.1 MB" },
+      { key: "kra_pin", name: "kra-pin-certificate.pdf", size: "96 KB" },
+      { key: "good_standing", name: "letter-of-good-standing.pdf", size: "150 KB" },
+    ],
     note: "Local NGO registered with the NGO Coordination Board. Certificate attached.",
     status: "pending",
     createdAt: isoDaysFromToday(-4, 8),
@@ -659,6 +678,8 @@ export const publications: Publication[] = [
     pages: 18,
     priceKes: 600,
     readMinutes: 15,
+    relatedGapCategory: "Emergency transport & referral",
+    relatedPostId: "p_1",
     createdAt: "2025-05-14T08:00:00.000Z",
   },
   {
@@ -672,6 +693,8 @@ export const publications: Publication[] = [
     pages: 26,
     priceKes: 900,
     readMinutes: 15,
+    relatedGapCategory: "Water, sanitation & hygiene",
+    relatedPostId: "p_2",
     createdAt: "2025-04-02T08:00:00.000Z",
   },
   {
@@ -685,6 +708,8 @@ export const publications: Publication[] = [
     pages: 14,
     priceKes: 450,
     readMinutes: 15,
+    relatedGapCategory: "Health financing & affordability",
+    relatedPostId: "p_3",
     createdAt: "2025-06-20T08:00:00.000Z",
   },
   {
@@ -698,6 +723,8 @@ export const publications: Publication[] = [
     pages: 11,
     priceKes: 350,
     readMinutes: 15,
+    relatedGapCategory: "Cold chain & logistics",
+    relatedPostId: "p_5",
     createdAt: "2025-07-01T08:00:00.000Z",
   },
 ]
@@ -768,6 +795,61 @@ export const boostOptions: BoostOption[] = [
     name: "Boost a funding call",
     priceKes: 2500,
     description: "For funders: push a call to every verified worker in the matching counties and themes.",
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Sponsor tiers (funder-side monetization, distinct from subscription plans).
+// Modelled on the standard conference/open-source sponsor ladder.
+// ---------------------------------------------------------------------------
+export const sponsorTiers: SponsorTier[] = [
+  {
+    id: "sponsor_platinum",
+    name: "Platinum",
+    priceKes: 150000,
+    period: "month",
+    rank: 4,
+    badgeColor: "#5b6472",
+    benefits: [
+      "Featured on the Afyashinani landing page",
+      "Guaranteed top placement in the directory and funding-call listings",
+      "Unlimited funding calls, boosted automatically",
+      "Access to evidence-gap frequency analytics across all themes",
+      "Co-branded webinars and training sessions",
+      "Dedicated account support and worker introductions",
+    ],
+  },
+  {
+    id: "sponsor_gold",
+    name: "Gold",
+    priceKes: 75000,
+    period: "month",
+    rank: 3,
+    badgeColor: "#c98a3c",
+    benefits: [
+      "Listed on the Afyashinani landing page",
+      "Priority placement in the directory and funding-call listings",
+      "3 free boosts a month",
+      "Evidence-gap analytics for your chosen focus themes",
+    ],
+  },
+  {
+    id: "sponsor_silver",
+    name: "Silver",
+    priceKes: 30000,
+    period: "month",
+    rank: 2,
+    badgeColor: "#9aa5ab",
+    benefits: ["Listed as an Afyashinani partner", "1 free boost a month"],
+  },
+  {
+    id: "sponsor_bronze",
+    name: "Bronze",
+    priceKes: 10000,
+    period: "month",
+    rank: 1,
+    badgeColor: "#b08463",
+    benefits: ["Bronze supporter badge", "20% off every boost purchase"],
   },
 ]
 

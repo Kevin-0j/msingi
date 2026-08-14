@@ -12,6 +12,7 @@ import {
 } from "@/lib/store"
 import { Avatar } from "@/components/avatar"
 import { VerifiedSeal, VerifiedBadge } from "@/components/verified-seal"
+import { SponsorBadge } from "@/components/sponsor-badge"
 import { ThemeChip } from "@/components/stat-chip"
 import { cn } from "@/lib/utils"
 import {
@@ -71,8 +72,9 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
             <p className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
               <MapPin size={14} /> {actor.location}
             </p>
-            <div className="mt-2">
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               <VerifiedBadge status={actor.verificationStatus} />
+              <SponsorBadge tierId={actor.sponsorTierId} />
             </div>
           </div>
         </div>
