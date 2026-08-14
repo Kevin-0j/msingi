@@ -48,7 +48,7 @@ export default function AssistantPage() {
     <AppShell>
       <div className="mb-6">
         <h1 className="flex items-center gap-2 font-display text-2xl text-foreground">
-          <Sparkles size={22} className="text-accent" /> AI Funder Assistant
+          <Sparkles size={22} className="text-accent" aria-hidden="true" /> AI Funder Assistant
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Ask which open calls fit your work, and what to actually write. Included with
@@ -60,7 +60,7 @@ export default function AssistantPage() {
         <>
           <div className="rounded-xl border border-accent/30 bg-accent/5 p-5">
             <p className="flex items-center gap-2 font-semibold text-foreground">
-              <Lock size={18} className="text-accent" /> This is a Pro feature
+              <Lock size={18} className="text-accent" aria-hidden="true" /> This is a Pro feature
             </p>
             <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
               Everything else on Afyashinani stays free: your profile, posting, messaging, and
@@ -143,9 +143,10 @@ export default function AssistantPage() {
             <button
               type="submit"
               disabled={!draft.trim()}
+              aria-label="Send question"
               className="inline-flex items-center gap-1 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground disabled:opacity-40"
             >
-              <Send size={16} />
+              <Send size={16} aria-hidden="true" />
             </button>
           </form>
           <p className="border-t border-border p-3 text-xs text-muted-foreground">

@@ -129,9 +129,9 @@ function MessagesInner() {
                   className="rounded-md p-1 text-muted-foreground hover:bg-muted md:hidden"
                   aria-label="Back to conversations"
                 >
-                  <ArrowLeft size={18} />
+                  <ArrowLeft size={18} aria-hidden="true" />
                 </button>
-                <Link href={`/profile/${other.id}`}>
+                <Link href={`/profile/${other.id}`} aria-hidden="true" tabIndex={-1}>
                   <Avatar name={other.name} color={other.avatarColor} size={40} />
                 </Link>
                 <div>
@@ -200,15 +200,16 @@ function MessagesInner() {
                 <button
                   type="submit"
                   disabled={!draft.trim()}
+                  aria-label="Send message"
                   className="inline-flex items-center gap-1 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground disabled:opacity-40"
                 >
-                  <Send size={16} />
+                  <Send size={16} aria-hidden="true" />
                 </button>
               </form>
             </>
           ) : (
             <div className="flex flex-1 flex-col items-center justify-center p-10 text-center text-muted-foreground">
-              <MessageSquare size={32} className="mb-2 opacity-50" />
+              <MessageSquare size={32} className="mb-2 opacity-50" aria-hidden="true" />
               <p>Select a conversation to start chatting.</p>
             </div>
           )}

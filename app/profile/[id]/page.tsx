@@ -56,7 +56,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
         href="/feed"
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft size={16} /> Back
+        <ArrowLeft size={16} aria-hidden="true" /> Back
       </Link>
 
       {/* Header */}
@@ -70,7 +70,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
             </div>
             <p className="text-muted-foreground">{actor.subtitle}</p>
             <p className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
-              <MapPin size={14} /> {actor.location}
+              <MapPin size={14} aria-hidden="true" /> {actor.location}
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <VerifiedBadge status={actor.verificationStatus} />
@@ -90,7 +90,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
                   : "bg-primary text-primary-foreground hover:opacity-90",
               )}
             >
-              {isConnected ? <Check size={16} /> : <UserPlus size={16} />}
+              {isConnected ? <Check size={16} aria-hidden="true" /> : <UserPlus size={16} aria-hidden="true" />}
               {isConnected ? "Connected" : "Connect"}
             </button>
             <button
@@ -108,7 +108,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
               onClick={() => router.push(`/messages?c=${store.startConversation(id)}`)}
               className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted"
             >
-              <MessageSquare size={16} /> Message
+              <MessageSquare size={16} aria-hidden="true" /> Message
             </button>
           </div>
         )}

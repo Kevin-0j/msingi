@@ -18,7 +18,6 @@ export function SponsorBadge({
 
   return (
     <span
-      title={`${tier.name} sponsor`}
       className={cn(
         "inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
         className,
@@ -29,7 +28,10 @@ export function SponsorBadge({
         backgroundColor: `${tier.badgeColor}14`,
       }}
     >
+      {/* The tier name is visible text, not colour alone, and the hidden
+          suffix spells out what the badge means for screen readers. */}
       {tier.name}
+      <span className="sr-only"> sponsor</span>
     </span>
   )
 }

@@ -30,7 +30,7 @@ export function RoleSwitcher() {
               className="rounded-md p-1 text-muted-foreground hover:bg-muted"
               aria-label="Close role switcher"
             >
-              <X size={14} />
+              <X size={14} aria-hidden="true" />
             </button>
           </div>
           <div className="flex flex-col gap-1.5">
@@ -55,7 +55,7 @@ export function RoleSwitcher() {
           onClick={() => setOpen(true)}
           className="flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-lift)] transition-transform hover:-translate-y-0.5"
         >
-          <Eye size={16} />
+          <Eye size={16} aria-hidden="true" />
           <span>Viewing: {ROLE_LABEL[role]}</span>
         </button>
       )}

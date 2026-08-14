@@ -47,7 +47,7 @@ function ResearchInner() {
           href="/research/new"
           className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
         >
-          <PenSquare size={16} /> Submit research
+          <PenSquare size={16} aria-hidden="true" /> Submit research
         </Link>
       </div>
 
@@ -63,6 +63,7 @@ function ResearchInner() {
 
       <div className="mb-5 flex flex-wrap items-center gap-2">
         <select
+              aria-label="Filter by evidence gap"
           value={gap}
           onChange={(e) => setGap(e.target.value as GapCategory | "all")}
           className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground outline-none"
@@ -109,7 +110,7 @@ function PublicationCard({ pub }: { pub: Publication }) {
     <li className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
       <div className="flex flex-wrap items-start gap-3">
         {author && (
-          <Link href={`/profile/${author.id}`}>
+          <Link href={`/profile/${author.id}`} aria-hidden="true" tabIndex={-1}>
             <Avatar name={author.name} color={author.avatarColor} size={44} />
           </Link>
         )}
@@ -153,19 +154,19 @@ function PublicationCard({ pub }: { pub: Publication }) {
 
       {purchased ? (
         <div className="mt-4 flex flex-wrap items-center gap-2 rounded-lg border border-impact/30 bg-impact/10 p-3">
-          <Check size={16} className="shrink-0 text-impact" />
+          <Check size={16} className="shrink-0 text-impact" aria-hidden="true" />
           <span className="text-sm text-foreground">
             Purchased. Full paper unlocked. {kes(pub.priceKes - commission)} went to the author,{" "}
             {kes(commission)} to Afyashinani.
           </span>
           <button className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground hover:bg-secondary">
-            <Download size={15} /> Download PDF
+            <Download size={15} aria-hidden="true" /> Download PDF
           </button>
         </div>
       ) : reading ? (
         <div className="mt-4 rounded-lg border border-border bg-secondary/40 p-4">
           <p className="flex items-center gap-1.5 text-sm font-medium text-foreground">
-            <Clock size={15} className="text-accent" /> Free preview: {pub.readMinutes} minutes
+            <Clock size={15} className="text-accent" aria-hidden="true" /> Free preview: {pub.readMinutes} minutes
           </p>
           <p className="mt-2 text-sm leading-relaxed text-foreground">{pub.abstract}</p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -193,13 +194,13 @@ function PublicationCard({ pub }: { pub: Publication }) {
             onClick={() => setReading(true)}
             className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
           >
-            <BookOpen size={16} /> Read {pub.readMinutes} min free
+            <BookOpen size={16} aria-hidden="true" /> Read {pub.readMinutes} min free
           </button>
           <button
             onClick={() => purchasePublication(pub.id)}
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
-            <Download size={16} /> Buy for {kes(pub.priceKes)}
+            <Download size={16} aria-hidden="true" /> Buy for {kes(pub.priceKes)}
           </button>
         </div>
       )}

@@ -7,8 +7,9 @@ import { Avatar } from "@/components/avatar"
 import { VerifiedSeal } from "@/components/verified-seal"
 import { ThemeChip } from "@/components/stat-chip"
 import { useStore } from "@/lib/store"
+import { cn } from "@/lib/utils"
 import type { Event, TicketType } from "@/lib/types"
-import { CalendarDays, Check, MapPin, Ticket } from "lucide-react"
+import { Accessibility, CalendarDays, Check, MapPin, Ticket, X } from "lucide-react"
 
 function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-KE", {
@@ -67,7 +68,7 @@ function EventCard({ event }: { event: Event }) {
     <li className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
       <div className="flex flex-wrap items-start gap-3">
         {host && (
-          <Link href={`/profile/${host.id}`}>
+          <Link href={`/profile/${host.id}`} aria-hidden="true" tabIndex={-1}>
             <Avatar name={host.name} color={host.avatarColor} size={44} />
           </Link>
         )}
@@ -91,10 +92,10 @@ function EventCard({ event }: { event: Event }) {
 
       <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <CalendarDays size={15} /> {fmtDate(event.startsAt)}
+          <CalendarDays size={15} aria-hidden="true" /> {fmtDate(event.startsAt)}
         </span>
         <span className="flex items-center gap-1.5">
-          <MapPin size={15} /> {event.location}
+          <MapPin size={15} aria-hidden="true" /> {event.location}
         </span>
       </div>
 
@@ -104,9 +105,47 @@ function EventCard({ event }: { event: Event }) {
         ))}
       </div>
 
+      {/* Access provisions, stated before booking rather than on request. */}
+      <div className="mt-3 rounded-lg border border-border bg-secondary/40 p-3">
+        <p className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+          <Accessibility size={15} className="text-primary" aria-hidden="true" />
+          Accessibility
+        </p>
+        <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+          {[
+            { on: event.accessibility.signLanguage, label: "Kenyan Sign Language" },
+            { on: event.accessibility.liveCaptions, label: "Live captions" },
+            { on: event.accessibility.wheelchairAccessible, label: "Wheelchair accessible" },
+            { on: event.accessibility.materialsInLargePrint, label: "Large-print materials" },
+          ].map((a) => (
+            <li
+              key={a.label}
+              className={cn(
+                "flex items-center gap-1.5 text-sm",
+                a.on ? "text-foreground" : "text-muted-foreground",
+              )}
+            >
+              {/* Provision is marked by icon AND wording, never colour alone. */}
+              {a.on ? (
+                <Check size={14} className="shrink-0 text-impact" aria-hidden="true" />
+              ) : (
+                <X size={14} className="shrink-0" aria-hidden="true" />
+              )}
+              {a.label}
+              <span className="sr-only">{a.on ? ": available" : ": not available"}</span>
+            </li>
+          ))}
+        </ul>
+        {event.accessibility.notes && (
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            {event.accessibility.notes}
+          </p>
+        )}
+      </div>
+
       {registration && registeredTicket ? (
         <div className="mt-4 flex items-center gap-2 rounded-lg border border-impact/30 bg-impact/10 p-3 text-sm">
-          <Check size={16} className="shrink-0 text-impact" />
+          <Check size={16} className="shrink-0 text-impact" aria-hidden="true" />
           <span className="text-foreground">
             You&apos;re registered: {registeredTicket.name} ({fmtPrice(registeredTicket.price)})
           </span>
@@ -146,7 +185,7 @@ function EventCard({ event }: { event: Event }) {
           onClick={() => setChoosing(true)}
           className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
         >
-          <Ticket size={16} /> Get a ticket
+          <Ticket size={16} aria-hidden="true" /> Get a ticket
         </button>
       )}
     </li>

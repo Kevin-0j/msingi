@@ -150,6 +150,27 @@ export interface StatChip {
   value: string
 }
 
+/**
+ * A photo plus the alt text describing it. Alt text is captured at compose
+ * time rather than generated, because only the person who was there can say
+ * what the photo shows. Blind and low-vision users get nothing from a photo
+ * without it.
+ */
+export interface PostPhoto {
+  src: string
+  alt: string
+}
+
+/**
+ * A recorded voice note plus its text transcript. The transcript is required,
+ * not optional: an audio-only update is unusable for Deaf and hard-of-hearing
+ * users, and unsearchable for everyone.
+ */
+export interface VoiceNote {
+  durationSeconds: number
+  transcript: string
+}
+
 export interface ImpactPost {
   id: string
   authorId: string
@@ -166,7 +187,10 @@ export interface ImpactPost {
   evidenceGap: string
   gapCategory: GapCategory
   statChips: StatChip[]
-  photos: string[]
+  /** Each photo carries its own alt text; see PostPhoto. */
+  photos: PostPhoto[]
+  /** Optional spoken update, always accompanied by a transcript. */
+  voiceNote?: VoiceNote
   createdAt: string
 }
 
@@ -336,6 +360,20 @@ export interface TicketType {
   note: string
 }
 
+/**
+ * Access provisions an event offers. Stated up front so a Deaf, blind or
+ * mobility-impaired attendee can tell whether they can actually take part
+ * before they book, instead of having to ask every host individually.
+ */
+export interface EventAccessibility {
+  signLanguage: boolean // Kenyan Sign Language interpretation
+  liveCaptions: boolean
+  wheelchairAccessible: boolean
+  materialsInLargePrint: boolean
+  /** Anything else, in plain language. */
+  notes?: string
+}
+
 export interface Event {
   id: string
   hostId: string // user / org / funder id
@@ -345,6 +383,7 @@ export interface Event {
   themes: Theme[]
   startsAt: string // ISO
   ticketTypes: TicketType[]
+  accessibility: EventAccessibility
   createdAt: string
 }
 

@@ -49,18 +49,25 @@ export function AppShell({
 
   return (
     <div className="min-h-screen bg-background">
+      {/* First tab stop on every page: lets keyboard and screen-reader users
+          jump straight past the navigation to the content. */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       {/* Top bar */}
       <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
           <Link href="/feed" className="font-display text-xl font-semibold text-primary">
             Afyashinani
+            <span className="sr-only"> — home, go to your feed</span>
           </Link>
           <div className="ml-auto flex items-center gap-1">
             <Link
               href="/verification"
               className="hidden items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted sm:flex"
             >
-              <ShieldCheck size={16} /> Verification
+              <ShieldCheck size={16} aria-hidden="true" /> Verification
             </Link>
             {role === "admin" && (
               <Link
@@ -75,7 +82,7 @@ export function AppShell({
               className="rounded-lg p-2 text-muted-foreground hover:bg-muted"
               aria-label="Notifications"
             >
-              <Bell size={18} />
+              <Bell size={18} aria-hidden="true" />
             </Link>
             {me && (
               <Link href={`/profile/${me.id}`} aria-label="My profile">
@@ -86,25 +93,31 @@ export function AppShell({
         </div>
 
         {/* Secondary nav: the left rail is hidden below lg, so surface it here */}
-        <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:hidden">
+        <nav
+          aria-label="More sections"
+          className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:hidden"
+        >
           {MORE_NAV.map((item) => {
             const active = pathname.startsWith(item.href)
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                  // min-h-11 (44px) meets WCAG 2.5.5 target size, which matters
+                  // for anyone with a tremor or limited dexterity.
+                  "flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors",
                   active
                     ? "border-primary bg-primary-tint text-primary"
                     : "border-border text-muted-foreground hover:text-foreground",
                 )}
               >
-                <item.icon size={14} /> {item.label}
+                <item.icon size={14} aria-hidden="true" /> {item.label}
               </Link>
             )
           })}
-        </div>
+        </nav>
       </header>
 
       <div className="mx-auto flex max-w-6xl gap-6 px-4 py-6">
@@ -125,13 +138,17 @@ export function AppShell({
                 <p className="text-xs text-muted-foreground">{me.location}</p>
               </Link>
             )}
-            <nav className="rounded-xl border border-border bg-card p-2 shadow-[var(--shadow-soft)]">
+            <nav
+              aria-label="Main"
+              className="rounded-xl border border-border bg-card p-2 shadow-[var(--shadow-soft)]"
+            >
               {NAV.map((item) => {
                 const active = pathname.startsWith(item.href)
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                       active
@@ -139,7 +156,7 @@ export function AppShell({
                         : "text-muted-foreground hover:bg-muted",
                     )}
                   >
-                    <item.icon size={18} /> {item.label}
+                    <item.icon size={18} aria-hidden="true" /> {item.label}
                   </Link>
                 )
               })}
@@ -150,6 +167,7 @@ export function AppShell({
                   <Link
                     key={item.href}
                     href={item.href}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                       active
@@ -157,7 +175,7 @@ export function AppShell({
                         : "text-muted-foreground hover:bg-muted",
                     )}
                   >
-                    <item.icon size={18} /> {item.label}
+                    <item.icon size={18} aria-hidden="true" /> {item.label}
                   </Link>
                 )
               })}
@@ -166,30 +184,37 @@ export function AppShell({
         </aside>
 
         {/* Center */}
-        <main className="min-w-0 flex-1 pb-20 md:pb-0">{children}</main>
+        <main id="main-content" tabIndex={-1} className="min-w-0 flex-1 pb-20 md:pb-0">
+          {children}
+        </main>
 
         {/* Right column */}
         {right && (
-          <aside className="hidden w-72 shrink-0 xl:block">
+          <aside aria-label="Related" className="hidden w-72 shrink-0 xl:block">
             <div className="sticky top-20 space-y-4">{right}</div>
           </aside>
         )}
       </div>
 
-      {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-border bg-background md:hidden">
+      {/* Mobile bottom nav. min-h-14 keeps every tap target at least 44px
+          tall, the WCAG 2.5.5 target size most often missed on mobile. */}
+      <nav
+        aria-label="Main"
+        className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-border bg-background md:hidden"
+      >
         {NAV.map((item) => {
           const active = pathname.startsWith(item.href)
           return (
             <Link
               key={item.href}
               href={item.href}
+              aria-current={active ? "page" : undefined}
               className={cn(
-                "flex flex-col items-center gap-1 py-2 text-xs",
+                "flex min-h-14 flex-col items-center justify-center gap-1 py-2 text-xs",
                 active ? "text-primary" : "text-muted-foreground",
               )}
             >
-              <item.icon size={20} />
+              <item.icon size={20} aria-hidden="true" />
               {item.label}
             </Link>
           )

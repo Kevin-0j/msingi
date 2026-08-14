@@ -62,7 +62,7 @@ export default function PricingPage() {
               <ul className="mt-4 flex-1 space-y-2">
                 {p.features.map((f) => (
                   <li key={f} className="flex gap-2 text-sm leading-relaxed text-foreground">
-                    <Check size={15} className="mt-0.5 shrink-0 text-impact" />
+                    <Check size={15} className="mt-0.5 shrink-0 text-impact" aria-hidden="true" />
                     {f}
                   </li>
                 ))}
@@ -86,7 +86,7 @@ export default function PricingPage() {
 
       <section className="mt-8">
         <h2 className="flex items-center gap-2 font-display text-xl text-foreground">
-          <Rocket size={20} className="text-accent" /> Boost
+          <Rocket size={20} className="text-accent" aria-hidden="true" /> Boost
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
           One-off placement, no subscription. Boost never changes who gets funded, only who sees
@@ -110,7 +110,7 @@ export default function PricingPage() {
           separate from the worker/org subscription plans above. */}
       <section className="mt-10">
         <h2 className="flex items-center gap-2 font-display text-xl text-foreground">
-          <Award size={20} className="text-accent" /> Sponsorship
+          <Award size={20} className="text-accent" aria-hidden="true" /> Sponsorship
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
           For health funding organisations backing the network itself, not a single call.
@@ -158,7 +158,7 @@ export default function PricingPage() {
                   <ul className="mt-3 flex-1 space-y-1.5">
                     {t.benefits.map((b) => (
                       <li key={b} className="flex gap-2 text-sm leading-relaxed text-foreground">
-                        <Check size={14} className="mt-1 shrink-0 text-impact" />
+                        <Check size={14} className="mt-1 shrink-0 text-impact" aria-hidden="true" />
                         {b}
                       </li>
                     ))}

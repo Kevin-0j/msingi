@@ -54,7 +54,7 @@ export function RightRail() {
             const isFollowing = following.includes(w.id)
             return (
               <div key={w.id} className="flex items-center gap-2">
-                <Link href={`/profile/${w.id}`}>
+                <Link href={`/profile/${w.id}`} aria-hidden="true" tabIndex={-1}>
                   <Avatar name={w.name} color={w.avatarColor} size={36} />
                 </Link>
                 <div className="min-w-0 flex-1">

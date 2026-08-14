@@ -202,14 +202,14 @@ function ReviewCard({
         <div className="mt-3 space-y-2">
           {duplicateIdentifier && (
             <p className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
-              <TriangleAlert size={15} className="mt-0.5 shrink-0" />
+              <TriangleAlert size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
               This license/registration number is also on another account&apos;s active request.
               Do not approve both.
             </p>
           )}
           {nameMismatch && (
             <p className="flex items-start gap-2 rounded-lg border border-accent/40 bg-accent/5 p-3 text-sm text-foreground">
-              <TriangleAlert size={15} className="mt-0.5 shrink-0 text-accent" />
+              <TriangleAlert size={15} className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
               Legal name does not match the profile name ({actorName}). Confirm this is the same
               person or entity before approving.
             </p>

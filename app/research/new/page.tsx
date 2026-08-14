@@ -78,7 +78,7 @@ export default function NewResearchPage() {
         href="/research"
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft size={16} /> Research Hub
+        <ArrowLeft size={16} aria-hidden="true" /> Research Hub
       </Link>
 
       <div className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
@@ -110,6 +110,7 @@ export default function NewResearchPage() {
 
           <Field label="Which evidence gap does this address?">
             <select
+              aria-label="Evidence gap this research addresses"
               value={gapCategory}
               onChange={(e) => {
                 setGapCategory(e.target.value as GapCategory)
@@ -129,6 +130,7 @@ export default function NewResearchPage() {
           {gapCategory && myPostsForGap.length > 0 && (
             <Field label="Link the impact post that first flagged this gap (optional)">
               <select
+              aria-label="Impact post that flagged this gap"
                 value={relatedPostId}
                 onChange={(e) => setRelatedPostId(e.target.value)}
                 className="msingi-input"
@@ -166,6 +168,7 @@ export default function NewResearchPage() {
           <div className="grid gap-5 sm:grid-cols-3">
             <Field label="Location">
               <select
+              aria-label="Location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="msingi-input"
@@ -197,7 +200,7 @@ export default function NewResearchPage() {
 
           {error && (
             <p className="flex items-start gap-1.5 text-sm text-destructive">
-              <CircleAlert size={15} className="mt-0.5 shrink-0" />
+              <CircleAlert size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
               {error}
             </p>
           )}

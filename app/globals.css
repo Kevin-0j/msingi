@@ -23,6 +23,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-warm: var(--accent-warm);
   --color-impact: var(--impact);
   --color-impact-foreground: var(--impact-foreground);
   --color-destructive: var(--destructive);
@@ -61,8 +62,13 @@
   --muted: #eeece7;
   --muted-foreground: #5a6b72;
 
-  --accent: #c98a3c;
+  /* Amber, darkened to 5.2:1 on white so it is legible as text and as a
+     border. The original #c98a3c measured 2.9:1 and failed WCAG AA. The
+     bright original is kept as --accent-warm for decorative fills only,
+     never for text or meaningful borders. */
+  --accent: #96611f;
   --accent-foreground: #ffffff;
+  --accent-warm: #c98a3c;
 
   --impact: #3e7d5b;
   --impact-foreground: #ffffff;
@@ -77,20 +83,58 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
+
   h1,
   h2,
   h3 {
     font-family: var(--font-sans);
   }
+
   .font-display {
     font-family: var(--font-serif);
     letter-spacing: -0.01em;
+  }
+
+  /* A single, unmissable keyboard focus indicator for every interactive
+     element. Keyboard and switch-device users navigate entirely by this, so
+     it must never be removed — only ever restyled. */
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Never trap a mouse-user's focus ring on click, but keep it for keyboard. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Respect the OS "reduce motion" setting: vestibular disorders can make
+     transitions and parallax genuinely nauseating. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Honour Windows High Contrast / forced-colors so borders survive. */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 3px solid CanvasText;
+    }
   }
 }
 
@@ -103,13 +147,57 @@
     padding: 0.625rem 0.75rem;
     font-size: 0.9375rem;
     color: var(--foreground);
-    outline: none;
-    transition: border-color 150ms ease;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
   }
+
   .msingi-input::placeholder {
     color: var(--muted-foreground);
   }
-  .msingi-input:focus {
+
+  /* Focus is signalled by an outline AND a colour change, so it does not
+     rely on colour perception alone. */
+  .msingi-input:focus-visible {
     border-color: var(--primary);
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* Marks a field the user must complete, in text as well as colour. */
+  .msingi-input[aria-invalid='true'] {
+    border-color: var(--destructive);
+  }
+
+  /* Visually hidden but read aloud by screen readers. Used for context that
+     sighted users get from layout and icons alone. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Skip link: the first tab stop on every page, so keyboard and screen
+     reader users can jump past the nav straight to the content. */
+  .skip-link {
+    position: absolute;
+    left: 0.75rem;
+    top: -100px;
+    z-index: 100;
+    border-radius: 0.5rem;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: top 150ms ease;
+  }
+
+  .skip-link:focus {
+    top: 0.75rem;
   }
 }

@@ -163,6 +163,7 @@ function SearchInner() {
       {/* Location + verified */}
       <div className="mb-5 flex flex-wrap items-center gap-2">
         <select
+              aria-label="Filter by location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground outline-none"
@@ -188,7 +189,11 @@ function SearchInner() {
             Clear filters
           </button>
         )}
-        <span className="ml-auto text-sm text-muted-foreground">
+        <span
+          role="status"
+          aria-live="polite"
+          className="ml-auto text-sm text-muted-foreground"
+        >
           {actors.length} {actors.length === 1 ? "result" : "results"}
         </span>
       </div>
@@ -202,7 +207,7 @@ function SearchInner() {
               key={a.id}
               className="flex items-center gap-3 rounded-xl border border-border bg-card p-4"
             >
-              <Link href={`/profile/${a.id}`}>
+              <Link href={`/profile/${a.id}`} aria-hidden="true" tabIndex={-1}>
                 <Avatar name={a.name} color={a.avatarColor} size={44} />
               </Link>
               <div className="min-w-0 flex-1">

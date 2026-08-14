@@ -126,7 +126,7 @@ export default function VerificationPage() {
       <div className="mx-auto max-w-2xl">
         <div className="rounded-xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]">
           <span className="inline-flex rounded-lg bg-primary-tint p-2.5 text-primary">
-            <ShieldCheck size={22} />
+            <ShieldCheck size={22} aria-hidden="true" />
           </span>
           <h1 className="mt-3 font-display text-2xl font-semibold text-foreground">
             Request verification
@@ -169,7 +169,7 @@ export default function VerificationPage() {
         ) : lapsed ? (
           <div className="mt-4 rounded-xl border border-accent/40 bg-accent/5 p-5">
             <p className="flex items-center gap-2 font-semibold text-foreground">
-              <CircleAlert size={18} className="text-accent" /> Your verification has lapsed
+              <CircleAlert size={18} className="text-accent" aria-hidden="true" /> Your verification has lapsed
             </p>
             <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
               It expired on {new Date(expiresAt!).toLocaleDateString("en-KE")}. Your seal is
@@ -200,7 +200,7 @@ export default function VerificationPage() {
             <StatusTracker stepIndex={stepIndex} />
             <div className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
               <h2 className="flex items-center gap-2 font-semibold text-foreground">
-                <Clock size={18} className="text-accent" /> Request under review
+                <Clock size={18} className="text-accent" aria-hidden="true" /> Request under review
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Submitted {new Date(existing.createdAt).toLocaleDateString("en-KE")} as{" "}
@@ -213,7 +213,7 @@ export default function VerificationPage() {
                     key={d.name}
                     className="flex items-center gap-2 rounded-lg border border-border p-2 text-sm"
                   >
-                    <FileText size={16} className="text-muted-foreground" />
+                    <FileText size={16} className="text-muted-foreground" aria-hidden="true" />
                     <span className="flex-1 truncate text-foreground">{d.name}</span>
                     <span className="text-xs text-muted-foreground">{d.size}</span>
                   </div>
@@ -233,7 +233,7 @@ export default function VerificationPage() {
             {existing?.status === "rejected" && (
               <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4">
                 <p className="flex items-center gap-2 text-sm font-semibold text-destructive">
-                  <CircleAlert size={16} /> Your last request was rejected
+                  <CircleAlert size={16} aria-hidden="true" /> Your last request was rejected
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Correct the documents below and resubmit. Nothing is permanently blocked.
@@ -263,7 +263,7 @@ export default function VerificationPage() {
                         </div>
                         {file ? (
                           <span className="flex shrink-0 items-center gap-1.5 rounded-md bg-impact/10 px-2 py-1 text-xs text-impact">
-                            <CheckCircle2 size={13} /> Attached
+                            <CheckCircle2 size={13} aria-hidden="true" /> Attached
                           </span>
                         ) : (
                           <span className="shrink-0 rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground">
@@ -274,7 +274,7 @@ export default function VerificationPage() {
 
                       {file ? (
                         <div className="mt-2 flex items-center gap-2 rounded-md bg-secondary/60 p-2 text-sm">
-                          <FileText size={15} className="text-primary" />
+                          <FileText size={15} className="text-primary" aria-hidden="true" />
                           <span className="flex-1 truncate text-foreground">{file.name}</span>
                           <span className="text-xs text-muted-foreground">{file.size}</span>
                           <button
@@ -282,7 +282,7 @@ export default function VerificationPage() {
                             className="rounded p-1 text-muted-foreground hover:bg-muted"
                             aria-label={`Remove ${d.label}`}
                           >
-                            <X size={14} />
+                            <X size={14} aria-hidden="true" />
                           </button>
                         </div>
                       ) : (
@@ -290,7 +290,7 @@ export default function VerificationPage() {
                           onClick={() => attach(d.key, d.label)}
                           className="mt-2 flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-border py-2 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
                         >
-                          <Upload size={15} /> Attach {d.label}
+                          <Upload size={15} aria-hidden="true" /> Attach {d.label}
                         </button>
                       )}
                     </div>
@@ -337,7 +337,7 @@ export default function VerificationPage() {
                 className="msingi-input mt-1"
               />
               <p className="mt-1 flex items-start gap-1.5 text-xs text-muted-foreground">
-                <Lock size={12} className="mt-0.5 shrink-0" />
+                <Lock size={12} className="mt-0.5 shrink-0" aria-hidden="true" />
                 One number, one account. If this number is already tied to another Afyashinani
                 account, the request is blocked.
               </p>
@@ -355,7 +355,7 @@ export default function VerificationPage() {
 
               {error && (
                 <p className="mt-3 flex items-start gap-1.5 text-sm text-destructive">
-                  <CircleAlert size={15} className="mt-0.5 shrink-0" />
+                  <CircleAlert size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
                   {error}
                 </p>
               )}
@@ -400,7 +400,7 @@ function StatusTracker({ stepIndex }: { stepIndex: number }) {
                   : "bg-muted text-muted-foreground",
               )}
             >
-              {i < stepIndex ? <CheckCircle2 size={16} /> : i + 1}
+              {i < stepIndex ? <CheckCircle2 size={16} aria-hidden="true" /> : i + 1}
             </span>
             <span
               className={cn(

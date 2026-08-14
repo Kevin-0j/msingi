@@ -7,7 +7,7 @@ import { useStore } from "@/lib/store"
 import { THEMES, LOCATIONS, GAP_CATEGORIES, type Theme, type GapCategory, type StatChip } from "@/lib/types"
 import { StatChip as StatChipView } from "@/components/stat-chip"
 import { cn } from "@/lib/utils"
-import { Mic, ImagePlus, ArrowLeft } from "lucide-react"
+import { Mic, ImagePlus, ArrowLeft, CircleAlert } from "lucide-react"
 import Link from "next/link"
 
 const PHOTO_OPTIONS = [
@@ -40,10 +40,16 @@ export default function ComposePage() {
   const [gapCategory, setGapCategory] = useState<GapCategory>(GAP_CATEGORIES[0])
   const [location, setLocation] = useState(LOCATIONS[0])
   const [themes, setThemes] = useState<Theme[]>([])
+  // Photo alt text is captured here, keyed by image, because only the person
+  // who was there can describe what a photo actually shows.
   const [photos, setPhotos] = useState<string[]>([])
+  const [photoAlts, setPhotoAlts] = useState<Record<string, string>>({})
   const [voiceNote, setVoiceNote] = useState(false)
+  const [transcript, setTranscript] = useState("")
+  const [error, setError] = useState<string | null>(null)
 
   const chips = deriveChips(reached, did)
+  const missingAlt = photos.filter((p) => !(photoAlts[p] ?? "").trim())
   const valid = where.trim() && did.trim() && themes.length > 0
 
   function toggleTheme(t: Theme) {
@@ -51,10 +57,25 @@ export default function ComposePage() {
   }
   function togglePhoto(p: string) {
     setPhotos((prev) => (prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]))
+    setError(null)
   }
 
   function submit() {
     if (!valid) return
+    // A photo without a description is invisible to blind users, and a voice
+    // note without a transcript is unusable for Deaf users. Both are blocked
+    // rather than silently posted as inaccessible content.
+    if (missingAlt.length > 0) {
+      setError(
+        `Describe ${missingAlt.length === 1 ? "the photo" : "each photo"} you attached, so people using a screen reader know what it shows.`,
+      )
+      return
+    }
+    if (voiceNote && !transcript.trim()) {
+      setError("Add a transcript for your voice note so Deaf and hard-of-hearing people can read it.")
+      return
+    }
+
     const id = addPost({
       location,
       themes,
@@ -64,7 +85,10 @@ export default function ComposePage() {
       evidenceGap: gap.trim(),
       gapCategory,
       statChips: chips,
-      photos,
+      photos: photos.map((src) => ({ src, alt: photoAlts[src].trim() })),
+      voiceNote: voiceNote
+        ? { durationSeconds: 12, transcript: transcript.trim() }
+        : undefined,
     })
     router.push(`/post/${id}`)
   }
@@ -75,7 +99,7 @@ export default function ComposePage() {
         href="/feed"
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft size={16} /> Back to feed
+        <ArrowLeft size={16} aria-hidden="true" /> Back to feed
       </Link>
       <div className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
         <h1 className="font-display text-2xl font-semibold text-foreground">
@@ -130,6 +154,7 @@ export default function ComposePage() {
 
           <Field label="Evidence gap category">
             <select
+              aria-label="Evidence gap category"
               value={gapCategory}
               onChange={(e) => setGapCategory(e.target.value as GapCategory)}
               className="msingi-input"
@@ -142,6 +167,7 @@ export default function ComposePage() {
 
           <Field label="Location">
             <select
+              aria-label="Location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="msingi-input"
@@ -174,38 +200,107 @@ export default function ComposePage() {
 
           <Field label="Photos">
             <div className="flex flex-wrap gap-2">
-              {PHOTO_OPTIONS.map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  onClick={() => togglePhoto(p)}
-                  className={cn(
-                    "relative h-20 w-28 overflow-hidden rounded-lg border-2",
-                    photos.includes(p) ? "border-primary" : "border-transparent",
-                  )}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p || "/placeholder.svg"} alt="" className="h-full w-full object-cover" />
-                </button>
-              ))}
+              {PHOTO_OPTIONS.map((p) => {
+                const selected = photos.includes(p)
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => togglePhoto(p)}
+                    aria-pressed={selected}
+                    className={cn(
+                      "relative h-20 w-28 overflow-hidden rounded-lg border-2",
+                      selected ? "border-primary" : "border-transparent",
+                    )}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p || "/placeholder.svg"} alt="" className="h-full w-full object-cover" />
+                    <span className="sr-only">
+                      {selected ? "Remove this photo" : "Add this photo"}
+                    </span>
+                  </button>
+                )
+              })}
               <span className="flex h-20 w-28 items-center justify-center rounded-lg border border-dashed border-border text-muted-foreground">
-                <ImagePlus size={20} />
+                <ImagePlus size={20} aria-hidden="true" />
               </span>
             </div>
+
+            {/* One description per attached photo. Required before posting. */}
+            {photos.length > 0 && (
+              <div className="mt-3 space-y-3">
+                {photos.map((p, i) => (
+                  <div key={p} className="rounded-lg border border-border p-3">
+                    <label
+                      htmlFor={`alt-${i}`}
+                      className="block text-sm font-medium text-foreground"
+                    >
+                      Describe photo {i + 1}
+                    </label>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      What would you tell someone who can&apos;t see it? e.g. &ldquo;A nurse
+                      weighing a baby outside the clinic tent.&rdquo;
+                    </p>
+                    <input
+                      id={`alt-${i}`}
+                      value={photoAlts[p] ?? ""}
+                      onChange={(e) => {
+                        setPhotoAlts((a) => ({ ...a, [p]: e.target.value }))
+                        setError(null)
+                      }}
+                      aria-invalid={!(photoAlts[p] ?? "").trim() || undefined}
+                      placeholder="Describe what is happening in the photo"
+                      className="msingi-input mt-2"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </Field>
 
-          <button
-            type="button"
-            onClick={() => setVoiceNote((v) => !v)}
-            className={cn(
-              "inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm",
-              voiceNote
-                ? "border-primary bg-primary-tint text-primary"
-                : "border-border text-muted-foreground hover:border-primary/40",
+          <div>
+            <button
+              type="button"
+              onClick={() => {
+                setVoiceNote((v) => !v)
+                setError(null)
+              }}
+              aria-pressed={voiceNote}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm",
+                voiceNote
+                  ? "border-primary bg-primary-tint text-primary"
+                  : "border-border text-muted-foreground hover:border-primary/40",
+              )}
+            >
+              <Mic size={16} aria-hidden="true" />{" "}
+              {voiceNote ? "Voice note attached (0:12)" : "Add a voice note"}
+            </button>
+
+            {voiceNote && (
+              <div className="mt-3 rounded-lg border border-border p-3">
+                <label htmlFor="transcript" className="block text-sm font-medium text-foreground">
+                  Transcript (required)
+                </label>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Type what you said. Deaf and hard-of-hearing colleagues read this instead of
+                  listening, and it makes your update searchable.
+                </p>
+                <textarea
+                  id="transcript"
+                  value={transcript}
+                  onChange={(e) => {
+                    setTranscript(e.target.value)
+                    setError(null)
+                  }}
+                  rows={3}
+                  aria-invalid={!transcript.trim() || undefined}
+                  placeholder="e.g. Three days at the Silanga clinic. We saw 214 mothers…"
+                  className="msingi-input mt-2"
+                />
+              </div>
             )}
-          >
-            <Mic size={16} /> {voiceNote ? "Voice note attached (0:12)" : "Add a voice note"}
-          </button>
+          </div>
 
           {chips.length > 0 && (
             <div className="rounded-lg border border-border bg-secondary/40 p-3">
@@ -216,6 +311,19 @@ export default function ComposePage() {
                 ))}
               </div>
             </div>
+          )}
+
+          {/* role="alert" so a screen reader announces the problem
+              immediately, rather than leaving the user stuck on a button
+              that appears to do nothing. */}
+          {error && (
+            <p
+              role="alert"
+              className="flex items-start gap-1.5 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive"
+            >
+              <CircleAlert size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
+              {error}
+            </p>
           )}
 
           <div className="flex justify-end gap-2">

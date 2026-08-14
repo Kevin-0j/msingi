@@ -29,7 +29,7 @@ export function PostCard({ post }: { post: ImpactPost }) {
     <article className="overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-soft)]">
       <div className="p-4">
         <div className="flex items-center gap-3">
-          <Link href={`/profile/${author.id}`}>
+          <Link href={`/profile/${author.id}`} aria-hidden="true" tabIndex={-1}>
             <Avatar name={author.name} color={author.avatarColor} size={40} />
           </Link>
           <div className="min-w-0">
@@ -53,7 +53,7 @@ export function PostCard({ post }: { post: ImpactPost }) {
         </Link>
 
         <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
-          <MapPin size={14} /> {post.location}
+          <MapPin size={14} aria-hidden="true" /> {post.location}
         </p>
 
         <p className="mt-3 text-[15px] leading-relaxed text-foreground">{post.whatWeDid}</p>
@@ -78,14 +78,15 @@ export function PostCard({ post }: { post: ImpactPost }) {
             post.photos.length > 1 ? "grid-cols-2" : "grid-cols-1",
           )}
         >
-          {post.photos.slice(0, 2).map((src, i) => (
+          {post.photos.slice(0, 2).map((photo, i) => (
             <div key={i} className="relative aspect-[3/2]">
               <Image
-                src={src || "/placeholder.svg"}
-                alt={post.where}
+                src={photo.src || "/placeholder.svg"}
+                alt={photo.alt}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, 400px"
+                sizes="(max-width: 768px) 50vw, 400px"
+                loading="lazy"
               />
             </div>
           ))}
@@ -108,14 +109,14 @@ export function PostCard({ post }: { post: ImpactPost }) {
                 : "text-muted-foreground hover:bg-muted",
             )}
           >
-            <Heart size={16} className={supported ? "fill-primary" : ""} />
+            <Heart size={16} className={supported ? "fill-primary" : ""} aria-hidden="true" />
             Support
           </button>
           <Link
             href={`/post/${post.id}`}
             className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted"
           >
-            <MessageSquare size={16} /> {commentCount}
+            <MessageSquare size={16} aria-hidden="true" /> {commentCount}
           </Link>
         </div>
       </div>

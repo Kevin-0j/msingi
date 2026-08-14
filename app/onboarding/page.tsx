@@ -91,17 +91,20 @@ function OnboardingInner() {
 
   return (
     <div className="min-h-screen bg-background">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <header className="mx-auto flex max-w-3xl items-center justify-between px-4 py-5">
         <Link
           href="/signup"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeft size={16} /> Back
+          <ArrowLeft size={16} aria-hidden="true" /> Back
         </Link>
         <span className="font-display text-xl font-semibold text-primary">Afyashinani</span>
       </header>
 
-      <main className="mx-auto max-w-2xl px-4 py-8">
+      <main id="main-content" tabIndex={-1} className="mx-auto max-w-2xl px-4 py-8">
         <p className="text-sm font-medium text-muted-foreground">Step 2 of 2</p>
         <h1 className="mt-1 font-display text-3xl font-semibold text-foreground text-balance">
           {heading}
@@ -140,6 +143,7 @@ function OnboardingInner() {
           {role === "organization" && (
             <Field label="What kind of organization?">
               <select
+              aria-label="Organisation type"
                 value={orgType}
                 onChange={(e) => setOrgType(e.target.value as OrgType)}
                 className="msingi-input"
@@ -156,6 +160,7 @@ function OnboardingInner() {
           {role === "funder" && (
             <Field label="What kind of funder?">
               <select
+              aria-label="Funder type"
                 value={funderType}
                 onChange={(e) => setFunderType(e.target.value as FunderType)}
                 className="msingi-input"
@@ -171,6 +176,7 @@ function OnboardingInner() {
 
           <Field label="Where are you based?">
             <select
+              aria-label="Location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="msingi-input"
@@ -249,7 +255,7 @@ function OnboardingInner() {
 
           {role !== "funder" && (
             <div className="flex items-start gap-2 rounded-lg border border-border bg-secondary/50 p-3">
-              <ShieldCheck size={18} className="mt-0.5 shrink-0 text-primary" />
+              <ShieldCheck size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
               <p className="text-sm leading-relaxed text-muted-foreground">
                 Next step after this: request your Verified seal. You can use Afyashinani fully
                 without it, but funders look for it.
@@ -259,7 +265,7 @@ function OnboardingInner() {
 
           {error && (
             <p className="flex items-start gap-1.5 text-sm text-destructive">
-              <CircleAlert size={15} className="mt-0.5 shrink-0" />
+              <CircleAlert size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
               {error}
             </p>
           )}
@@ -268,7 +274,7 @@ function OnboardingInner() {
             onClick={finish}
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
-            Enter Afyashinani <ArrowRight size={16} />
+            Enter Afyashinani <ArrowRight size={16} aria-hidden="true" />
           </button>
           <p className="text-center text-xs text-muted-foreground">
             Demo build: this creates a real profile in local storage. No server, no account.

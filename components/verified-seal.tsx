@@ -2,26 +2,31 @@ import { cn } from "@/lib/utils"
 import type { VerificationStatus } from "@/lib/types"
 
 // A deliberately non-Twitter seal/shield with a check.
+//
+// Accessibility: the seal carries real meaning, so by default it exposes the
+// word "Verified" to screen readers. Where it sits next to visible text that
+// already says so, pass `decorative` to avoid announcing it twice.
 export function VerifiedSeal({
   size = 16,
   className,
+  decorative = false,
 }: {
   size?: number
   className?: string
+  decorative?: boolean
 }) {
   return (
-    <span
-      title="Verified"
-      className={cn("inline-flex items-center text-primary", className)}
-    >
+    <span className={cn("inline-flex items-center text-primary", className)}>
       <svg
         width={size}
         height={size}
         viewBox="0 0 24 24"
         fill="none"
-        aria-label="Verified"
-        role="img"
+        role={decorative ? undefined : "img"}
+        aria-hidden={decorative ? "true" : undefined}
+        focusable="false"
       >
+        {!decorative && <title>Verified</title>}
         <path
           d="M12 2l7 2.5v6.2c0 4.6-3 8.4-7 9.8-4-1.4-7-5.2-7-9.8V4.5L12 2z"
           fill="currentColor"
@@ -45,11 +50,13 @@ export function VerifiedSeal({
   )
 }
 
+// Status is conveyed by text, never by colour alone, so it survives both
+// colour blindness and a monochrome/high-contrast display.
 export function VerifiedBadge({ status }: { status: VerificationStatus }) {
   if (status === "verified")
     return (
       <span className="inline-flex items-center gap-1 rounded-full bg-primary-tint px-2 py-0.5 text-xs font-medium text-primary">
-        <VerifiedSeal size={13} /> Verified
+        <VerifiedSeal size={13} decorative /> Verified
       </span>
     )
   if (status === "pending")

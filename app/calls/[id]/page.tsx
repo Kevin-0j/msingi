@@ -89,7 +89,7 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
         href="/calls"
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft size={16} /> Funding calls
+        <ArrowLeft size={16} aria-hidden="true" /> Funding calls
       </Link>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
@@ -149,7 +149,7 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
               <ul className="space-y-2">
                 {call.eligibility.map((e) => (
                   <li key={e} className="flex gap-2 text-[15px] leading-relaxed text-foreground">
-                    <Check size={16} className="mt-1 shrink-0 text-impact" />
+                    <Check size={16} className="mt-1 shrink-0 text-impact" aria-hidden="true" />
                     <span>{e}</span>
                   </li>
                 ))}
@@ -210,7 +210,7 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
             ) : mySubmission ? (
               <div className="mt-5 rounded-lg border border-impact/30 bg-impact/10 p-3">
                 <p className="flex items-center gap-1.5 text-sm font-medium text-impact">
-                  <Check size={15} />
+                  <Check size={15} aria-hidden="true" />
                   {mySubmission.type === "application" ? "Applied" : "Interest sent"}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
@@ -252,7 +252,7 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
                 />
                 {error && (
                   <p className="mt-2 flex items-start gap-1.5 text-xs text-destructive">
-                    <CircleAlert size={14} className="mt-0.5 shrink-0" />
+                    <CircleAlert size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
                     {error}
                   </p>
                 )}
@@ -333,7 +333,7 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
       {(isOwner || role === "admin") && (
         <section className="mt-6 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
           <h2 className="flex items-center gap-2 font-semibold text-foreground">
-            <Inbox size={18} className="text-primary" /> Responses ({responses.length})
+            <Inbox size={18} className="text-primary" aria-hidden="true" /> Responses ({responses.length})
           </h2>
           {responses.length === 0 ? (
             <p className="mt-3 rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">

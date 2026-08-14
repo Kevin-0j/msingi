@@ -51,7 +51,7 @@ export default function CallsPage() {
             href="/calls/new"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
-            <Plus size={16} /> Post a call
+            <Plus size={16} aria-hidden="true" /> Post a call
           </Link>
         )}
       </div>
@@ -60,7 +60,7 @@ export default function CallsPage() {
       {isFunder && (
         <div className="mb-6 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
           <h2 className="flex items-center gap-2 font-semibold text-foreground">
-            <Inbox size={18} className="text-primary" /> Your calls
+            <Inbox size={18} className="text-primary" aria-hidden="true" /> Your calls
           </h2>
           {myCalls.length === 0 ? (
             <p className="mt-2 text-sm text-muted-foreground">

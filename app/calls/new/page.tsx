@@ -51,7 +51,7 @@ export default function NewCallPage() {
       <AppShell>
         <div className="mx-auto max-w-xl rounded-xl border border-accent/40 bg-accent/5 p-8 text-center">
           <span className="inline-flex rounded-lg bg-accent/15 p-2.5 text-accent">
-            <ShieldCheck size={22} />
+            <ShieldCheck size={22} aria-hidden="true" />
           </span>
           <h1 className="mt-3 font-display text-xl text-foreground">
             Verify your organisation before posting a call
@@ -120,7 +120,7 @@ export default function NewCallPage() {
         href="/calls"
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft size={16} /> Funding calls
+        <ArrowLeft size={16} aria-hidden="true" /> Funding calls
       </Link>
 
       <div className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
@@ -226,7 +226,7 @@ export default function NewCallPage() {
                 onClick={addRule}
                 className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-border px-3 text-sm font-medium text-foreground hover:bg-secondary"
               >
-                <Plus size={15} /> Add
+                <Plus size={15} aria-hidden="true" /> Add
               </button>
             </div>
             {eligibility.length > 0 && (
@@ -243,7 +243,7 @@ export default function NewCallPage() {
                       className="rounded p-1 text-muted-foreground hover:bg-muted"
                       aria-label={`Remove ${e}`}
                     >
-                      <X size={14} />
+                      <X size={14} aria-hidden="true" />
                     </button>
                   </li>
                 ))}
@@ -253,7 +253,7 @@ export default function NewCallPage() {
 
           {error && (
             <p className="flex items-start gap-1.5 text-sm text-destructive">
-              <CircleAlert size={15} className="mt-0.5 shrink-0" />
+              <CircleAlert size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
               {error}
             </p>
           )}

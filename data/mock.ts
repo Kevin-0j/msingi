@@ -289,7 +289,15 @@ export const posts: ImpactPost[] = [
       { label: "new ANC", value: "47" },
       { label: "referrals", value: "12" },
     ],
-    photos: [PHOTOS.maternal, PHOTOS.community],
+    photos: [
+      { src: PHOTOS.maternal, alt: "A nurse checking an expectant mother at a bench clinic under a tarpaulin in Silanga, Kibera" },
+      { src: PHOTOS.community, alt: "Mothers waiting with babies on benches outside the Silanga clinic" },
+    ],
+    voiceNote: {
+      durationSeconds: 42,
+      transcript:
+        "Three days at the Silanga clinic. We saw 214 mothers, 47 of them for a first antenatal visit, which is the highest we have had. Twelve were high risk and we referred them the same day. The thing that keeps happening is night-time. If labour starts at 2am there is no safe transport, and last month we nearly lost a mother because of it.",
+    },
     createdAt: isoDaysFromToday(-1),
   },
   {
@@ -308,7 +316,9 @@ export const posts: ImpactPost[] = [
       { label: "children screened", value: "320" },
       { label: "SAM enrolled", value: "28" },
     ],
-    photos: [PHOTOS.wash],
+    photos: [
+      { src: PHOTOS.wash, alt: "A sand-filter water point being filled from a jerrycan in Kalokol, Turkana" },
+    ],
     createdAt: isoDaysFromToday(-3),
   },
   {
@@ -327,7 +337,9 @@ export const posts: ImpactPost[] = [
       { label: "new TB", value: "9" },
       { label: "on treatment", value: "6" },
     ],
-    photos: [PHOTOS.community],
+    photos: [
+      { src: PHOTOS.community, alt: "Community health workers meeting residents on a narrow lane in Mathare 4A" },
+    ],
     createdAt: isoDaysFromToday(-6),
   },
   {
@@ -345,7 +357,9 @@ export const posts: ImpactPost[] = [
       { label: "sessions", value: "4" },
       { label: "referrals", value: "14" },
     ],
-    photos: [PHOTOS.outreach],
+    photos: [
+      { src: PHOTOS.outreach, alt: "A pharmacist speaking to a group of secondary-school students in Kisumu" },
+    ],
     createdAt: isoDaysFromToday(-9),
   },
   {
@@ -362,7 +376,9 @@ export const posts: ImpactPost[] = [
       { label: "homes", value: "120" },
       { label: "children immunized", value: "64" },
     ],
-    photos: [PHOTOS.outreach],
+    photos: [
+      { src: PHOTOS.outreach, alt: "A community health promoter recording a child immunisation on a growth card in Nyamira" },
+    ],
     createdAt: isoDaysFromToday(-11),
   },
   {
@@ -380,7 +396,10 @@ export const posts: ImpactPost[] = [
       { label: "suspected cases", value: "22" },
       { label: "wells treated", value: "5" },
     ],
-    photos: [PHOTOS.wash, PHOTOS.community],
+    photos: [
+      { src: PHOTOS.wash, alt: "A worker chlorinating a shallow well after flooding in Mombasa" },
+      { src: PHOTOS.community, alt: "Residents gathered around an oral-rehydration point set up in the open" },
+    ],
     createdAt: isoDaysFromToday(-15),
   },
 ]
@@ -629,6 +648,13 @@ export const events: Event[] = [
       { id: "tt_1b", name: "Organisation", price: 1500, note: "Covers lunch and materials" },
       { id: "tt_1c", name: "Funder / partner", price: 5000, note: "Supports free worker places" },
     ],
+        accessibility: {
+      signLanguage: true,
+      liveCaptions: true,
+      wheelchairAccessible: true,
+      materialsInLargePrint: true,
+      notes: "KSL interpretation throughout. Handouts also available as an audio recording on request.",
+    },
     createdAt: isoDaysFromToday(-27, 8),
   },
   {
@@ -644,6 +670,13 @@ export const events: Event[] = [
       { id: "tt_2a", name: "Community scout", price: 0, note: "Free" },
       { id: "tt_2b", name: "Organisation", price: 2000, note: "Includes field kit" },
     ],
+        accessibility: {
+      signLanguage: false,
+      liveCaptions: true,
+      wheelchairAccessible: false,
+      materialsInLargePrint: true,
+      notes: "Field site is on uneven ground. Contact the host and we will run a separate session at an accessible venue.",
+    },
     createdAt: isoDaysFromToday(-24, 8),
   },
   {
@@ -659,6 +692,13 @@ export const events: Event[] = [
       { id: "tt_3a", name: "General entry", price: 0, note: "Free, online" },
       { id: "tt_3b", name: "Small-group clinic", price: 800, note: "Limited to 20 people" },
     ],
+        accessibility: {
+      signLanguage: true,
+      liveCaptions: true,
+      wheelchairAccessible: true,
+      materialsInLargePrint: false,
+      notes: "Online session. Captions are automatic, and a KSL interpreter is pinned in the call.",
+    },
     createdAt: isoDaysFromToday(-29, 8),
   },
 ]
@@ -809,7 +849,7 @@ export const sponsorTiers: SponsorTier[] = [
     priceKes: 150000,
     period: "month",
     rank: 4,
-    badgeColor: "#5b6472",
+    badgeColor: "#4a525e",
     benefits: [
       "Featured on the Afyashinani landing page",
       "Guaranteed top placement in the directory and funding-call listings",
@@ -825,7 +865,7 @@ export const sponsorTiers: SponsorTier[] = [
     priceKes: 75000,
     period: "month",
     rank: 3,
-    badgeColor: "#c98a3c",
+    badgeColor: "#96611f",
     benefits: [
       "Listed on the Afyashinani landing page",
       "Priority placement in the directory and funding-call listings",
@@ -839,7 +879,7 @@ export const sponsorTiers: SponsorTier[] = [
     priceKes: 30000,
     period: "month",
     rank: 2,
-    badgeColor: "#9aa5ab",
+    badgeColor: "#5f6b71",
     benefits: ["Listed as an Afyashinani partner", "1 free boost a month"],
   },
   {
@@ -848,7 +888,7 @@ export const sponsorTiers: SponsorTier[] = [
     priceKes: 10000,
     period: "month",
     rank: 1,
-    badgeColor: "#b08463",
+    badgeColor: "#8a5a3c",
     benefits: ["Bronze supporter badge", "20% off every boost purchase"],
   },
 ]

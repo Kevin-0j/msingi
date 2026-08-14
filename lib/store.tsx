@@ -50,7 +50,7 @@ import { COMMISSION_RATE } from "@/lib/types"
 
 // Bump this whenever seeded copy or shape changes: persisted state snapshots the
 // seed data, so an old key would keep serving stale text to returning visitors.
-const STORAGE_KEY = "afyashinani.state.v2"
+const STORAGE_KEY = "afyashinani.state.v3"
 
 // A verified seal is trusted for 12 months before it needs renewing, the
 // same discipline real verification platforms (Stripe Identity, Candid's
@@ -282,21 +282,39 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const allFunders = [...state.createdFunders, ...seedFunders]
     const allPublications = [...state.createdPublications, ...seedPublications]
 
-    const getWorker = (id: string) => allWorkers.find((w) => w.id === id)
-    const getOrg = (id: string) => allOrgs.find((o) => o.id === id)
-    const getFunder = (id: string) => allFunders.find((f) => f.id === id)
+    // Indexed lookups. getActor runs once per row while filtering the feed
+    // and directory, so a linear scan per call made these O(n*m); a Map keeps
+    // them O(1) and keeps list filtering snappy as the data grows.
+    const workerById = new Map(allWorkers.map((w) => [w.id, w]))
+    const orgById = new Map(allOrgs.map((o) => [o.id, o]))
+    const funderById = new Map(allFunders.map((f) => [f.id, f]))
 
-    // The latest verification request for a subject, across every status,
-    // most recent first. Several helpers below need this same lookup.
-    const requestsFor = (id: string) =>
-      state.verificationRequests
-        .filter((r) => r.subjectId === id)
-        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    const getWorker = (id: string) => workerById.get(id)
+    const getOrg = (id: string) => orgById.get(id)
+    const getFunder = (id: string) => funderById.get(id)
+
+    // Verification requests, grouped by subject and sorted once per render
+    // rather than re-filtering and re-sorting the whole array on every
+    // getActor call.
+    const requestsBySubject = new Map<string, VerificationRequest[]>()
+    for (const r of state.verificationRequests) {
+      const list = requestsBySubject.get(r.subjectId)
+      if (list) list.push(r)
+      else requestsBySubject.set(r.subjectId, [r])
+    }
+    for (const list of requestsBySubject.values()) {
+      list.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    }
+
+    const requestsFor = (id: string) => requestsBySubject.get(id) ?? []
 
     const latestVerificationRequestOf = (id: string) => requestsFor(id)[0]
 
     const verificationExpiryOf = (id: string) =>
       requestsFor(id).find((r) => r.status === "verified" && r.expiresAt)?.expiresAt
+
+    // Evaluated once per render instead of once per verifStatusOf call.
+    const nowIso = new Date().toISOString()
 
     // A verified seal that has passed its expiry stops counting as verified
     // until it's renewed — trust lapses automatically rather than staying
@@ -305,7 +323,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const status = state.verifiedOverrides[id] ?? fallback
       if (status === "verified") {
         const expiresAt = verificationExpiryOf(id)
-        if (expiresAt && expiresAt < new Date().toISOString()) return "pending"
+        if (expiresAt && expiresAt < nowIso) return "pending"
       }
       return status
     }

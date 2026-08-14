@@ -98,7 +98,7 @@ export default function ConsortiumPage() {
           href="/calls"
           className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90"
         >
-          See the open calls <ArrowRight size={16} />
+          See the open calls <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </section>
     </AppShell>

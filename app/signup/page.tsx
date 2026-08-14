@@ -39,17 +39,20 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <header className="mx-auto flex max-w-3xl items-center justify-between px-4 py-5">
         <Link
           href="/"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeft size={16} /> Back
+          <ArrowLeft size={16} aria-hidden="true" /> Back
         </Link>
         <span className="font-display text-xl font-semibold text-primary">Afyashinani</span>
       </header>
 
-      <main className="mx-auto max-w-2xl px-4 py-8">
+      <main id="main-content" tabIndex={-1} className="mx-auto max-w-2xl px-4 py-8">
         <p className="text-sm font-medium text-muted-foreground">Step 1 of 2</p>
         <h1 className="mt-1 font-display text-3xl font-semibold text-foreground text-balance">
           What brings you to Afyashinani?
@@ -90,7 +93,7 @@ export default function SignupPage() {
           disabled={!role}
           className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-40"
         >
-          Continue <ArrowRight size={16} />
+          Continue <ArrowRight size={16} aria-hidden="true" />
         </button>
 
         <p className="mt-4 text-center text-sm text-muted-foreground">

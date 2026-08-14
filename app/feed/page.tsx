@@ -46,10 +46,15 @@ function FeedInner() {
   return (
     <AppShell right={<RightRail />}>
       <div className="space-y-4">
+        {/* Every page needs exactly one h1 so screen-reader users can orient
+            themselves. The design has no visible title here, so it is
+            visually hidden rather than omitted. */}
+        <h1 className="sr-only">Discover: impact from frontline health workers</h1>
+
         {/* Search + composer entry */}
         <div className="flex gap-2">
           <div className="flex flex-1 items-center gap-2 rounded-xl border border-border bg-card px-3 shadow-[var(--shadow-soft)]">
-            <Search size={18} className="text-muted-foreground" />
+            <Search size={18} className="text-muted-foreground" aria-hidden="true" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -61,7 +66,7 @@ function FeedInner() {
             href="/compose"
             className="flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
           >
-            <PenSquare size={16} /> <span className="hidden sm:inline">Share</span>
+            <PenSquare size={16} aria-hidden="true" /> <span className="hidden sm:inline">Share</span>
           </Link>
         </div>
 
@@ -80,6 +85,7 @@ function FeedInner() {
         {/* Location + gap + verified */}
         <div className="flex flex-wrap items-center gap-2">
           <select
+              aria-label="Filter by location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground outline-none"
@@ -92,6 +98,7 @@ function FeedInner() {
             ))}
           </select>
           <select
+              aria-label="Filter by evidence gap"
             value={gap}
             onChange={(e) => setGap(e.target.value as GapCategory | "all")}
             className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground outline-none"
@@ -112,7 +119,13 @@ function FeedInner() {
             />
             Verified only
           </label>
-          <span className="ml-auto text-sm text-muted-foreground">
+          {/* aria-live so a screen-reader user hears the result count change
+              when they adjust a filter, instead of silence. */}
+          <span
+            role="status"
+            aria-live="polite"
+            className="ml-auto text-sm text-muted-foreground"
+          >
             {filtered.length} {filtered.length === 1 ? "post" : "posts"}
           </span>
         </div>

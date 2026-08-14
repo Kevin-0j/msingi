@@ -6,6 +6,9 @@ import { funders, sponsorTiers } from "@/data/mock"
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
         <span className="font-display text-2xl font-semibold text-primary">Afyashinani</span>
         <div className="flex items-center gap-2">
@@ -24,6 +27,7 @@ export default function LandingPage() {
         </div>
       </header>
 
+      <main id="main-content" tabIndex={-1}>
       {/* Hero */}
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 md:grid-cols-2 md:py-16">
         <div>
@@ -44,7 +48,7 @@ export default function LandingPage() {
               href="/feed"
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:opacity-90"
             >
-              Explore the feed <ArrowRight size={16} />
+              Explore the feed <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <Link
               href="/signup"
@@ -182,9 +186,11 @@ export default function LandingPage() {
           href="/signup"
           className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:opacity-90"
         >
-          Get started <ArrowRight size={16} />
+          Get started <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </section>
+
+      </main>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
         Afyashinani, a network for grassroots health workers. Demo build with mock data.
@@ -213,7 +219,7 @@ function Door({
       <h3 className="mt-4 font-semibold text-foreground">{title}</h3>
       <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{body}</p>
       <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary">
-        Enter <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+        Enter <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
       </span>
     </Link>
   )

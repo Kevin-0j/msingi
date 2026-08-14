@@ -5,8 +5,25 @@ import { StoreProvider } from "@/lib/store"
 import { RoleSwitcher } from "@/components/role-switcher"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader" })
+// display:"swap" shows text immediately in a fallback face rather than
+// blocking on the webfont, which matters most on the slow mobile
+// connections much of this audience is actually on.
+// Newsreader is display-only (headings), so it is not preloaded.
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  preload: true,
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+})
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-newsreader",
+  display: "swap",
+  preload: false,
+  fallback: ["Georgia", "Times New Roman", "serif"],
+})
 
 export const metadata: Metadata = {
   title: "Afyashinani: grassroot health partners for innovative, impactful, accessible and measurable health solutions",
