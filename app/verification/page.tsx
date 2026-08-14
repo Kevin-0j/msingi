@@ -68,7 +68,7 @@ export default function VerificationPage() {
             Request verification
           </h1>
           <p className="mt-1 text-muted-foreground">
-            The Msingi seal tells funders your work is real. Upload documents that prove your role
+            The Afyashinani seal tells funders your work is real. Upload documents that prove your role
             or your organisation&apos;s registration. Our team reviews every request by hand.
           </p>
 
@@ -88,7 +88,7 @@ export default function VerificationPage() {
 
         {!canRequest ? (
           <div className="mt-4 rounded-xl border border-border bg-card p-6 text-center text-muted-foreground shadow-[var(--shadow-soft)]">
-            Verification is for health workers and organizations. Switch role using the demo
+            Verification is for health workers and health service providers. Switch role using the demo
             switcher to try it.
           </div>
         ) : currentStatus === "verified" ? (

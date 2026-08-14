@@ -215,7 +215,7 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   Sent {new Date(mySubmission.createdAt).toLocaleDateString("en-KE")}. Status:{" "}
-                  {mySubmission.status}. The funder will follow up through Msingi messages.
+                  {mySubmission.status}. The funder will follow up through Afyashinani messages.
                 </p>
                 {mySubmission.type === "interest" && !closed && mode === null && (
                   <button
@@ -322,8 +322,9 @@ export default function CallDetailPage({ params }: { params: Promise<{ id: strin
           </div>
 
           <div className="rounded-xl border border-border bg-card p-5 text-xs leading-relaxed text-muted-foreground">
-            Submissions are stored locally on your device for this demo. In production, Msingi
-            routes them to the funder&apos;s dashboard with your verified profile attached.
+            Submissions are stored locally on your device for this demo. In production,
+            Afyashinani routes them to the funder&apos;s dashboard with your verified profile
+            attached.
           </div>
         </aside>
       </div>

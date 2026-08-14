@@ -420,7 +420,7 @@ export const fundingCalls: FundingCall[] = [
     themes: ["Adolescent SRH", "HIV"],
     eligibility: [
       "Individual health workers or small teams already working in an informal settlement",
-      "At least three months of posted work on Msingi",
+      "At least three months of posted work on Afyashinani",
       "Verified seal, or verification in progress",
       "No registration certificate required for individuals",
     ],
@@ -460,7 +460,7 @@ export const fundingCalls: FundingCall[] = [
     themes: ["TB", "Nutrition"],
     eligibility: [
       "Registered organisations only (CBO, NGO or clinic)",
-      "Verified seal on Msingi",
+      "Verified seal on Afyashinani",
       "At least one year of continuous frontline work",
       "Willing to do two light check-in calls a year",
     ],
@@ -708,7 +708,7 @@ export const publications: Publication[] = [
 export const plans: Plan[] = [
   {
     id: "plan_free",
-    name: "Msingi Free",
+    name: "Afyashinani Free",
     tier: "free",
     priceKes: 0,
     audience: "Every health worker, always",
@@ -722,7 +722,7 @@ export const plans: Plan[] = [
   },
   {
     id: "plan_pro",
-    name: "Msingi Pro",
+    name: "Afyashinani Pro",
     tier: "paid",
     priceKes: 500,
     audience: "Workers and small teams chasing funding",
@@ -736,7 +736,7 @@ export const plans: Plan[] = [
   },
   {
     id: "plan_institution",
-    name: "Msingi Institution",
+    name: "Afyashinani Institution",
     tier: "paid",
     priceKes: 6000,
     audience: "Organisations, funders and county teams",

@@ -98,7 +98,7 @@ function OnboardingInner() {
         >
           <ArrowLeft size={16} /> Back
         </Link>
-        <span className="font-display text-xl font-semibold text-primary">Msingi</span>
+        <span className="font-display text-xl font-semibold text-primary">Afyashinani</span>
       </header>
 
       <main className="mx-auto max-w-2xl px-4 py-8">
@@ -251,8 +251,8 @@ function OnboardingInner() {
             <div className="flex items-start gap-2 rounded-lg border border-border bg-secondary/50 p-3">
               <ShieldCheck size={18} className="mt-0.5 shrink-0 text-primary" />
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Next step after this: request your Verified seal. You can use Msingi fully without
-                it, but funders look for it.
+                Next step after this: request your Verified seal. You can use Afyashinani fully
+                without it, but funders look for it.
               </p>
             </div>
           )}
@@ -268,7 +268,7 @@ function OnboardingInner() {
             onClick={finish}
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
-            Enter Msingi <ArrowRight size={16} />
+            Enter Afyashinani <ArrowRight size={16} />
           </button>
           <p className="text-center text-xs text-muted-foreground">
             Demo build: this creates a real profile in local storage. No server, no account.

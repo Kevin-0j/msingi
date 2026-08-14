@@ -9,13 +9,13 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader" })
 
 export const metadata: Metadata = {
-  title: "Msingi: the network for grassroots health workers",
+  title: "Afyashinani: grassroot health partners for innovative, impactful, accessible and measurable health solutions",
   description:
-    "A professional network, funding marketplace and knowledge hub for grassroots health workers in Kenya. Plain, practical, human.",
+    "Connecting grassroot health partners for innovative, impactful, accessible and measurable health solutions at the grassroots. Alone we can go fast, together we can go far.",
   generator: "v0.app",
   manifest: "/manifest.webmanifest",
-  applicationName: "Msingi",
-  appleWebApp: { capable: true, title: "Msingi", statusBarStyle: "default" },
+  applicationName: "Afyashinani",
+  appleWebApp: { capable: true, title: "Afyashinani", statusBarStyle: "default" },
 }
 
 export const viewport: Viewport = {

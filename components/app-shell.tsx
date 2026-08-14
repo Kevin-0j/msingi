@@ -53,7 +53,7 @@ export function AppShell({
       <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
           <Link href="/feed" className="font-display text-xl font-semibold text-primary">
-            Msingi
+            Afyashinani
           </Link>
           <div className="ml-auto flex items-center gap-1">
             <Link

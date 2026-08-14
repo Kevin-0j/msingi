@@ -51,7 +51,8 @@ export default function AssistantPage() {
           <Sparkles size={22} className="text-accent" /> AI Funder Assistant
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Ask which open calls fit your work, and what to actually write. Included with Msingi Pro.
+          Ask which open calls fit your work, and what to actually write. Included with
+          Afyashinani Pro.
         </p>
       </div>
 
@@ -62,8 +63,8 @@ export default function AssistantPage() {
               <Lock size={18} className="text-accent" /> This is a Pro feature
             </p>
             <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Everything else on Msingi stays free: your profile, posting, messaging, and
-              applying to every funding call. The assistant is part of Msingi Pro.
+              Everything else on Afyashinani stays free: your profile, posting, messaging, and
+              applying to every funding call. The assistant is part of Afyashinani Pro.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <Link

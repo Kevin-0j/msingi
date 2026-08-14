@@ -21,7 +21,7 @@ export default function ConsortiumPage() {
   const { posts, fundingCalls, workers, organizations } = useStore()
 
   const stats = [
-    { label: "frontline workers on Msingi", value: workers.length.toLocaleString("en-KE") },
+    { label: "frontline workers on Afyashinani", value: workers.length.toLocaleString("en-KE") },
     { label: "organisations", value: organizations.length.toLocaleString("en-KE") },
     { label: "impact reports filed", value: posts.length.toLocaleString("en-KE") },
     { label: "open funding calls", value: fundingCalls.length.toLocaleString("en-KE") },
@@ -30,7 +30,7 @@ export default function ConsortiumPage() {
   return (
     <AppShell>
       <div className="mb-6">
-        <h1 className="font-display text-2xl text-foreground">The Msingi Consortium</h1>
+        <h1 className="font-display text-2xl text-foreground">The Afyashinani Consortium</h1>
         <p className="mt-1 leading-relaxed text-muted-foreground text-pretty">
           Counties, funders, NGOs and academic partners pooling money and evidence behind the same
           frontline teams, instead of running four parallel pilots in the same village.

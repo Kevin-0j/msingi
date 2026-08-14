@@ -24,8 +24,8 @@ export default function ResearchPage() {
         <h1 className="font-display text-2xl text-foreground">Research Hub</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Field evidence written by the people who collected it. Read the first 15 minutes free;
-          pay to download the full paper. Msingi takes {Math.round(COMMISSION_RATE * 100)}%, and
-          the rest goes to the author.
+          pay to download the full paper. Afyashinani takes {Math.round(COMMISSION_RATE * 100)}%,
+          and the rest goes to the author.
         </p>
       </div>
 
@@ -99,7 +99,7 @@ function PublicationCard({ pub }: { pub: Publication }) {
           <Check size={16} className="shrink-0 text-impact" />
           <span className="text-sm text-foreground">
             Purchased. Full paper unlocked. {kes(pub.priceKes - commission)} went to the author,{" "}
-            {kes(commission)} to Msingi.
+            {kes(commission)} to Afyashinani.
           </span>
           <button className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground hover:bg-secondary">
             <Download size={15} /> Download PDF

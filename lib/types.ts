@@ -1,7 +1,23 @@
-// Domain types for Msingi. Shapes map cleanly to Firestore collections later:
+// Domain types for Afyashinani. Shapes map cleanly to Firestore collections later:
 // string ids, ISO timestamps, flat references by id.
 
 export type Role = "worker" | "organization" | "funder" | "admin"
+
+// Public-facing category names for the three account types. The internal
+// Role slugs stay short; these are what the product actually calls them.
+export const ROLE_LABEL: Record<Role, string> = {
+  worker: "Health worker",
+  organization: "Health service provider",
+  funder: "Health funding organisation",
+  admin: "Admin",
+}
+
+export const ROLE_LABEL_PLURAL: Record<Role, string> = {
+  worker: "Health workers",
+  organization: "Health service providers",
+  funder: "Health funding organisations",
+  admin: "Admins",
+}
 
 export type VerificationStatus = "unverified" | "pending" | "verified" | "rejected"
 
@@ -218,7 +234,7 @@ export interface Publication {
   themes: Theme[]
   location: string
   pages: number
-  priceKes: number // gross price; Msingi takes COMMISSION_RATE
+  priceKes: number // gross price; Afyashinani takes COMMISSION_RATE
   readMinutes: number // free preview window
   createdAt: string
 }
@@ -260,5 +276,5 @@ export interface AssistantSampleTurn {
   text: string
 }
 
-// Msingi takes 15% of every publication sale.
+// Afyashinani takes 15% of every publication sale.
 export const COMMISSION_RATE = 0.15

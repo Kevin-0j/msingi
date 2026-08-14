@@ -3,6 +3,7 @@
 import { AppShell } from "@/components/app-shell"
 import { useStore } from "@/lib/store"
 import { plans, boostOptions } from "@/data/mock"
+import { ROLE_LABEL } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { Check, Rocket } from "lucide-react"
 
@@ -24,9 +25,9 @@ export default function PricingPage() {
         <p className="mt-2 text-sm text-muted-foreground">
           You&apos;re on{" "}
           <span className="font-medium text-foreground">
-            {plans.find((p) => p.id === myPlanId)?.name ?? "Msingi Free"}
+            {plans.find((p) => p.id === myPlanId)?.name ?? "Afyashinani Free"}
           </span>{" "}
-          ({myTier}) as <span className="capitalize">{role}</span>.
+          ({myTier}) as <span>{ROLE_LABEL[role]}</span>.
         </p>
       </div>
 

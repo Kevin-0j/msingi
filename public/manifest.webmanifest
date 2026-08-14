@@ -1,7 +1,7 @@
 {
-  "name": "Msingi: the network for grassroots health workers",
-  "short_name": "Msingi",
-  "description": "The network for grassroots health workers.",
+  "name": "Afyashinani: grassroot health partners for innovative, impactful, accessible and measurable health solutions",
+  "short_name": "Afyashinani",
+  "description": "Connecting grassroot health partners for innovative, impactful, accessible and measurable health solutions at the grassroots.",
   "start_url": "/feed",
   "scope": "/",
   "display": "standalone",

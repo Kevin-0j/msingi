@@ -81,8 +81,8 @@ function SearchInner() {
   const kinds: { key: Kind; label: string }[] = [
     { key: "all", label: "Everyone" },
     { key: "worker", label: "Health workers" },
-    { key: "organization", label: "Organisations" },
-    { key: "funder", label: "Funders" },
+    { key: "organization", label: "Health service providers" },
+    { key: "funder", label: "Health funding organisations" },
   ]
 
   const filtersActive =

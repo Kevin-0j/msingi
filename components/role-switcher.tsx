@@ -3,16 +3,11 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import { useStore } from "@/lib/store"
-import type { Role } from "@/lib/types"
+import { ROLE_LABEL, type Role } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { Eye, X } from "lucide-react"
 
-const ROLES: { role: Role; label: string }[] = [
-  { role: "worker", label: "Worker" },
-  { role: "organization", label: "Organization" },
-  { role: "funder", label: "Funder" },
-  { role: "admin", label: "Admin" },
-]
+const ROLES: Role[] = ["worker", "organization", "funder", "admin"]
 
 export function RoleSwitcher() {
   const { role, setRole } = useStore()
@@ -25,7 +20,7 @@ export function RoleSwitcher() {
   return (
     <div className="fixed bottom-20 right-4 z-50 md:bottom-6">
       {open ? (
-        <div className="w-56 rounded-xl border border-border bg-card p-3 shadow-[var(--shadow-lift)]">
+        <div className="w-72 rounded-xl border border-border bg-card p-3 shadow-[var(--shadow-lift)]">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Demo: view as
@@ -38,19 +33,19 @@ export function RoleSwitcher() {
               <X size={14} />
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col gap-1.5">
             {ROLES.map((r) => (
               <button
-                key={r.role}
-                onClick={() => setRole(r.role)}
+                key={r}
+                onClick={() => setRole(r)}
                 className={cn(
-                  "rounded-lg border px-2 py-2 text-sm font-medium transition-colors",
-                  role === r.role
+                  "rounded-lg border px-3 py-2 text-left text-sm font-medium transition-colors",
+                  role === r
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border bg-background text-foreground hover:border-primary/40",
                 )}
               >
-                {r.label}
+                {ROLE_LABEL[r]}
               </button>
             ))}
           </div>
@@ -61,7 +56,7 @@ export function RoleSwitcher() {
           className="flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-lift)] transition-transform hover:-translate-y-0.5"
         >
           <Eye size={16} />
-          <span className="capitalize">Viewing: {role}</span>
+          <span>Viewing: {ROLE_LABEL[role]}</span>
         </button>
       )}
     </div>

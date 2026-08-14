@@ -47,7 +47,7 @@ import { COMMISSION_RATE } from "@/lib/types"
 
 // Bump this whenever seeded copy or shape changes: persisted state snapshots the
 // seed data, so an old key would keep serving stale text to returning visitors.
-const STORAGE_KEY = "msingi.state.v3"
+const STORAGE_KEY = "afyashinani.state.v1"
 
 // Normalized actor used across profiles / messaging / follow.
 export interface Actor {
@@ -298,7 +298,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return {
           id,
           kind: "worker",
-          name: "Msingi Admin",
+          name: "Afyashinani Admin",
           subtitle: "Verification team",
           location: "Nairobi",
           avatarColor: "#1b2a30",

@@ -34,7 +34,7 @@ export default function NotificationsPage() {
     {
       id: "seed-welcome",
       actorId: "o_silanga",
-      text: "Welcome to Msingi. Complete verification to earn your Verified seal.",
+      text: "Welcome to Afyashinani. Complete verification to earn your Verified seal.",
       href: "/verification",
     },
     {
@@ -51,7 +51,7 @@ export default function NotificationsPage() {
     <AppShell>
       <div className="mb-6">
         <h1 className="font-display text-2xl text-foreground">Notifications</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Recent activity across your Msingi network.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Recent activity across your Afyashinani network.</p>
       </div>
 
       <ul className="flex flex-col gap-2">

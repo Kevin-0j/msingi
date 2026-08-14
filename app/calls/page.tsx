@@ -153,7 +153,7 @@ export default function CallsPage() {
                           {call.title}
                         </h2>
                         <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-                          {funder?.name ?? "Msingi funder"}
+                          {funder?.name ?? "Afyashinani funder"}
                           {funder?.verificationStatus === "verified" && <VerifiedSeal size={14} />}
                         </div>
                       </div>

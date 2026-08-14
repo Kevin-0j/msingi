@@ -177,7 +177,7 @@ export default function NewCallPage() {
                     addRule()
                   }
                 }}
-                placeholder="e.g. At least three months of posted work on Msingi"
+                placeholder="e.g. At least three months of posted work on Afyashinani"
                 className="msingi-input"
               />
               <button

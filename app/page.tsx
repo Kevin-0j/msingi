@@ -6,7 +6,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
-        <span className="font-display text-2xl font-semibold text-primary">Msingi</span>
+        <span className="font-display text-2xl font-semibold text-primary">Afyashinani</span>
         <div className="flex items-center gap-2">
           <Link
             href="/login"
@@ -34,8 +34,9 @@ export default function LandingPage() {
           </h1>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground text-pretty">
             No flowery titles. Just what happened. &ldquo;Last week in Kibera we ran a 3-day
-            clinic, saw 214 mothers, biggest gap is night-time emergency transport.&rdquo; Msingi
-            connects grassroots health workers in Kenya with funders who back real, credible work.
+            clinic, saw 214 mothers, biggest gap is night-time emergency transport.&rdquo;
+            Afyashinani connects grassroots health workers in Kenya with funders who back real,
+            credible work.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -64,7 +65,23 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Three doors */}
+      {/* Mission */}
+      <section className="border-y border-border bg-primary-tint/40 px-4 py-14">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+            Our mission
+          </p>
+          <p className="mt-3 font-display text-2xl font-semibold leading-snug text-foreground text-balance md:text-3xl">
+            Connecting grassroot health partners for innovative, impactful, accessible and
+            measurable health solutions at the grassroots.
+          </p>
+          <p className="mt-5 font-display text-lg italic text-primary">
+            &ldquo;Alone we can go fast, together we can go far.&rdquo;
+          </p>
+        </div>
+      </section>
+
+      {/* Three categories */}
       <section className="mx-auto max-w-6xl px-4 py-10">
         <h2 className="font-display text-2xl font-semibold text-foreground">Three ways in</h2>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -75,12 +92,12 @@ export default function LandingPage() {
           />
           <Door
             icon={Building2}
-            title="For organizations"
+            title="For health service providers"
             body="Clinics, CBOs and NGOs: put your communities and needs in front of people who fund frontline work."
           />
           <Door
             icon={HandCoins}
-            title="For funders"
+            title="For health funding organisations"
             body="Find credible frontline teams by the work they actually do. Post calls, back real people."
           />
         </div>
@@ -123,7 +140,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        Msingi, a network for grassroots health workers. Demo build with mock data.
+        Afyashinani, a network for grassroots health workers. Demo build with mock data.
       </footer>
     </div>
   )

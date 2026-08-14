@@ -5,16 +5,16 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useStore } from "@/lib/store"
 import { Avatar } from "@/components/avatar"
-import type { Role } from "@/lib/types"
+import { ROLE_LABEL, type Role } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 // Demo accounts, one per role dimension. No passwords, no backend.
 const SEEDED: { role: Role; id: string; label: string }[] = [
-  { role: "worker", id: "u_amina", label: "Health worker" },
-  { role: "organization", id: "o_silanga", label: "Organization" },
-  { role: "funder", id: "f_ubuntu", label: "Funder" },
-  { role: "admin", id: "admin_1", label: "Msingi admin" },
+  { role: "worker", id: "u_amina", label: ROLE_LABEL.worker },
+  { role: "organization", id: "o_silanga", label: ROLE_LABEL.organization },
+  { role: "funder", id: "f_ubuntu", label: ROLE_LABEL.funder },
+  { role: "admin", id: "admin_1", label: "Afyashinani admin" },
 ]
 
 export default function LoginPage() {
@@ -52,7 +52,7 @@ export default function LoginPage() {
         <Link href="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft size={16} /> Back
         </Link>
-        <span className="font-display text-xl font-semibold text-primary">Msingi</span>
+        <span className="font-display text-xl font-semibold text-primary">Afyashinani</span>
       </header>
 
       <main className="mx-auto max-w-lg px-4 py-8">

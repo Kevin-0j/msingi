@@ -62,8 +62,8 @@ export default function AdminPage() {
       <div className="mb-8 grid gap-3 grid-cols-2 lg:grid-cols-3">
         {[
           { label: "health workers", value: workers.length },
-          { label: "organisations", value: organizations.length },
-          { label: "funders", value: funders.length },
+          { label: "health service providers", value: organizations.length },
+          { label: "health funding organisations", value: funders.length },
           { label: "impact posts", value: posts.length },
           { label: "open funding calls", value: fundingCalls.length },
           { label: "funding responses", value: submissions.length },
@@ -144,7 +144,7 @@ function ReviewCard({
               {req.status === "verified" && <VerifiedSeal size={14} />}
             </div>
             <p className="mt-0.5 text-xs uppercase tracking-wide text-muted-foreground">
-              {req.subjectType === "worker" ? "Health worker" : "Organisation"} · submitted{" "}
+              {req.subjectType === "worker" ? "Health worker" : "Health service provider"} · submitted{" "}
               {new Date(req.createdAt).toLocaleDateString()}
             </p>
           </div>

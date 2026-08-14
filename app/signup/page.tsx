@@ -21,13 +21,13 @@ const ACCOUNT_TYPES: {
   },
   {
     role: "organization",
-    title: "We're an organization",
+    title: "We're a health service provider",
     body: "A clinic, CBO, NGO, trust or research institution working on the ground.",
     icon: Building2,
   },
   {
     role: "funder",
-    title: "We fund this work",
+    title: "We're a health funding organisation",
     body: "Foundation, donor, county government or health-sector partner.",
     icon: HandCoins,
   },
@@ -46,13 +46,13 @@ export default function SignupPage() {
         >
           <ArrowLeft size={16} /> Back
         </Link>
-        <span className="font-display text-xl font-semibold text-primary">Msingi</span>
+        <span className="font-display text-xl font-semibold text-primary">Afyashinani</span>
       </header>
 
       <main className="mx-auto max-w-2xl px-4 py-8">
         <p className="text-sm font-medium text-muted-foreground">Step 1 of 2</p>
         <h1 className="mt-1 font-display text-3xl font-semibold text-foreground text-balance">
-          What brings you to Msingi?
+          What brings you to Afyashinani?
         </h1>
         <p className="mt-2 text-muted-foreground text-pretty">
           Pick the one that fits. You can affiliate with organizations later, and this doesn&apos;t
